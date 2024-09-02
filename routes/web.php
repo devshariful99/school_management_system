@@ -2,18 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Admin\DashboardController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
-    Route::get('/dashboard', [DashboardController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
 
     // // Admin Management Routes
