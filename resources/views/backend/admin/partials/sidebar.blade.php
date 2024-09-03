@@ -27,11 +27,28 @@
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
-              <li class="nav-item {{$page_slug == 'dashboard' ? 'active' : ''}}">
+              <li class="nav-item  @if($page_slug == 'dashboard') active @endif">
                 <a href="{{route('admin.dashboard')}}">
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
                 </a>
+              </li>
+
+               <li class="nav-item  @if($page_slug == 'admin') active submenu @endif">
+                <a data-bs-toggle="collapse" href="#admin_management" @if($page_slug == 'admin') aria-expanded="true" @endif>
+                  <i class="fas fa-bars"></i>
+                  <p>Admin Management</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse @if($page_slug == 'admin') show @endif" id="admin_management">
+                  <ul class="nav nav-collapse">
+                    <li class="@if($page_slug == 'admin') active @endif">
+                      <a href="{{route('am.admin.index')}}">
+                        <span class="sub-item">Admin</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </li>
 
 
