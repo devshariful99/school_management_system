@@ -12,12 +12,12 @@
                     <table class="table table-responsive table-striped">
                         <thead>
                             <tr>
-                                <th>SL</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Created Date</th>
-                                <th>Updated Date</th>
-                                <th>Action</th>
+                                <th>{{__('SL')}}</th>
+                                <th>{{__('Name')}}</th>
+                                <th>{{__('Email')}}</th>
+                                <th>{{__('Created Date')}}</th>
+                                <th>{{__('Updated Date')}}</th>
+                                <th>{{__('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,9 +34,9 @@
                                                 <i class="icon-options-vertical"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a href="" type="button">Details</a></li>
-                                                <li><a href="">Edit</a></li>
-                                                <li><a href="">Delete</a></li>
+                                                <li><a href="" class="dropdown-item">{{__('Details')}}</a></li>
+                                                <li><a href="" class="dropdown-item">{{__('Edit')}}</a></li>
+                                                <li><a href="" class="dropdown-item">{{__('Delete')}}</a></li>
                                             </ul>
                                         </div>
                                     </td>
