@@ -37,16 +37,19 @@
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a href="" class="dropdown-item">{{ __('Details') }}</a></li>
-                                                <li><a href="{{ route('am.admin.edit', $admin->id) }}"
-                                                        class="dropdown-item">{{ __('Edit') }}</a>
+                                                <li><a href="{{ route('am.admin.edit', $admin->id) }}" class="dropdown-item">{{ __('Edit') }}</a>
                                                 </li>
-                                                {{-- <li><a href="{{ route('am.admin.destroy', $admin->id) }}"
-                                                        class="dropdown-item">{{ __('Delete') }}</a></li> --}}
                                                 <li>
-                                                    {{ Form::open(['url' => 'tanks/' . $value->id, 'class' => 'pull-right']) }}
-                                                    {{ Form::hidden('_method', 'DELETE') }}
-                                                    {{ Form::submit('Delete this Tank', ['class' => 'btn btn-warning']) }}
-                                                    {{ Form::close() }}
+                                                    <a class="dropdown-item" href="javascript:void(0)"
+                                                        onclick="document.getElementById('delete-form').submit();">
+                                                        {{ __('Delete') }}
+                                                    </a>
+
+                                                    <form id="delete-form" action="{{ route('am.admin.destroy',$admin->id)}}" method="POST"
+                                                        class="d-none">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
                                                 </li>
                                             </ul>
                                         </div>

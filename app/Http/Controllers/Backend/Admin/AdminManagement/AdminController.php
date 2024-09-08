@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminRequest;
+use App\Http\Requests\Admin\AdminRequest;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 
@@ -80,7 +80,7 @@ class AdminController extends Controller
             $imageName = $req->name . '_' . time() . '.' . $image->getClientOriginalExtension();
             $folderName = 'admins/';
             $path = $image->storeAs($folderName, $imageName, 'public');
-            if (!empty($lf->image)) {
+            if (!empty($admin->image)) {
                 $this->fileDelete($admin->image);
             }
             $admin->image = $path;
@@ -101,6 +101,7 @@ class AdminController extends Controller
     public function destroy(string $id)
     {
         $admin = Admin::findOrFail($id);
+        $admin->deleted_by = auth()->guard('admin')->user()->id;
         $admin->delete();
         return redirect()->route('am.admin.index')->withStatus(__('Admin deleted successfully'));
     }

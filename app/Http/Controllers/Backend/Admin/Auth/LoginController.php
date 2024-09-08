@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function adminLogin()
     {
-        if (Auth::guard('admin')->check() && auth()->guard('admin')->user()->status == 1) {
+        if (Auth::guard('admin')->check()) {
             return redirect()->route('admin.dashboard');
         }
         return view('backend.admin.login');
