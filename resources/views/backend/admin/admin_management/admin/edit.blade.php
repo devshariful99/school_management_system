@@ -1,19 +1,21 @@
 @extends('backend.admin.layouts.master', ['page_slug' => 'admin'])
-@section('title', 'Create Admin')
+@section('title', 'Edit Admin')
 @section('content')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="cart-title">{{ __('Create Admin') }}</h4>
+                    <h4 class="cart-title">{{ __('Edit Admin') }}</h4>
                     <a href="{{ route('am.admin.index') }}" class="btn btn-sm btn-primary">{{ __('Back') }}</a>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('am.admin.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('am.admin.update', $admin->id) }}" method="POST" enctype="multipart/form-data">
+                        @method('PUT')
                         @csrf
                         <div class="form-group">
                             <label>{{ __('Name') }}</label>
-                            <input type="text" name="name" class="form-control" placeholder="Enter name">
+                            <input type="text" name="name" value="{{ $admin->name }}" class="form-control"
+                                placeholder="Enter name">
                             @include('alerts.feedback', ['field' => 'name'])
                         </div>
                         <div class="form-group">
@@ -21,9 +23,13 @@
                             <input type="file" accept="image/*" name="image" class="form-control">
                             @include('alerts.feedback', ['field' => 'image'])
                         </div>
+                        @if ($admin->image)
+                            <img src="{{ asset('storage/' . $admin->image) }}" alt="" width="100" height="100">
+                        @endif
                         <div class="form-group">
                             <label>{{ __('Email') }}</label>
-                            <input type="text" name="email" class="form-control" placeholder="Enter email">
+                            <input type="text" name="email" value="{{ $admin->email }}" class="form-control"
+                                placeholder="Enter email">
                             @include('alerts.feedback', ['field' => 'email'])
                         </div>
                         <div class="form-group">
@@ -37,7 +43,7 @@
                                 placeholder="Enter confirm password">
                         </div>
                         <div class="form-group float-end">
-                            <input type="submit" class="btn btn-primary" value="Create">
+                            <input type="submit" class="btn btn-primary" value="Update">
                         </div>
                     </form>
                 </div>

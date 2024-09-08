@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('image')->nullable();
             $table->boolean('status')->default(1);
             $table->boolean('is_verify')->default(0);
             $table->string('otp')->nullable();

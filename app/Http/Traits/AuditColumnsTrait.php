@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Traits;
+
 use Illuminate\Database\Schema\Blueprint;
 
 trait AuditColumnsTrait
@@ -11,9 +12,9 @@ trait AuditColumnsTrait
         $table->unsignedBigInteger('updated_by')->nullable();
         $table->unsignedBigInteger('deleted_by')->nullable();
 
-        $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-        $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        $table->foreign('created_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
+        $table->foreign('updated_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
+        $table->foreign('deleted_by')->references('id')->on('admins')->onDelete('cascade')->onUpdate('cascade');
     }
     public function dropAdminAuditColumns(Blueprint $table): void
     {
