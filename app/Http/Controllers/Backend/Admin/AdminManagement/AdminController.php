@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Http\Traits\DetailsCommonDataTrait;
 
 class AdminController extends Controller
 {
+    use DetailsCommonDataTrait;
     /**
      * Display a listing of the resource.
      */
@@ -55,15 +57,17 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $id)
     {
-        //
+        $data = Admin::with(['created_admin', 'updated_admin'])->findOrFail($id);
+        $this->AdminAuditColumnsData($data);
+        return response()->json($data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
         $data['admin'] = Admin::findOrFail($id);
         return view('backend.admin.admin_management.admin.edit', $data);
@@ -72,7 +76,7 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminRequest $req, string $id)
+    public function update(AdminRequest $req, int $id)
     {
         $admin = Admin::findOrFail($id);
         if ($req->hasFile('image')) {
@@ -98,11 +102,18 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
         $admin = Admin::findOrFail($id);
         $admin->deleted_by = auth()->guard('admin')->user()->id;
         $admin->delete();
         return redirect()->route('am.admin.index')->withStatus(__('Admin deleted successfully'));
+    }
+
+    public function status(int $id)
+    {
+        $admin = Admin::findOrFail($id);
+        $this->statusChange($admin);
+        return redirect()->route('am.admin.index')->withStatus(__('Admin status updated successfully'));
     }
 }

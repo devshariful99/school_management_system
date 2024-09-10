@@ -38,9 +38,13 @@
     {{-- <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/bootstrap.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/kaiadmin.min.css') }}" />
-
+    @stack('css_links')
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/demo.css') }}" />
+
+    {{-- Custom CSS   --}}
+    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/custom.css') }}">
+    @stack('css')
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -170,6 +174,7 @@
 
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{ asset('backend/admin/assets/js/setting-demo.js') }}"></script>
+@stack('js_links')
 <script src="{{ asset('backend/admin/assets/js/demo.js') }}"></script>
 <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
@@ -199,5 +204,8 @@
         fillColor: "rgba(255, 165, 52, .14)",
     });
 </script>
+{{-- Custom Js  --}}
+<script src="{{ asset('backend/admin/assets/js/custom.js') }}"></script>
+@stack('js')
 
 </html>

@@ -26,12 +26,9 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
-    // Admin Management 
+    // Admin Management
     Route::group(['as' => 'am.', 'prefix' => 'admin-management'], function () {
         Route::resource('admin', AdminController::class);
+        Route::get('admin/status/{admin}', [AdminController::class, 'status'])->name('admin.status');
     });
-    
-
-
-
 });
