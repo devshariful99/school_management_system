@@ -16,7 +16,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $data['admins'] = Admin::latest()->get();
+        $data['admins'] = Admin::with('created_admin')->latest()->get();
 
         // $admins = Admin::latest()->get();
         // $students = Admin::latest()->get();

@@ -55,9 +55,9 @@ class AuthBaseModel extends Authenticatable
     public function getStatusBtnBg()
     {
         if ($this->status == 1) {
-            return 'btn-success';
+            return 'btn btn-danger';
         } else {
-            return 'btn-danger';
+            return 'btn btn-success';
         }
     }
     public function getStatusBadgeBg()

@@ -18,7 +18,7 @@
                                 <th>{{ __('Email') }}</th>
                                 <th>{{ __('Status') }}</th>
                                 <th>{{ __('Created Date') }}</th>
-                                <th>{{ __('Updated Date') }}</th>
+                                <th>{{ __('Created By') }}</th>
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -32,8 +32,8 @@
                                             class="{{ $admin->getStatusBadgeBg() }}">{{ $admin->getStatusBadgeTitle() }}</span>
                                     </td>
                                     <td>{{ timeFormat($admin->created_at) }}</td>
-                                    <td>{{ $admin->created_at != $admin->updated_at ? timeFormat($admin->updated_at) : 'NULL' }}
-                                    </td>
+                                    <td>{{ c_user_name($admin->created_admin) }}</td>
+                                    
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-primary btn-rounded "
