@@ -10,6 +10,11 @@ use App\Http\Traits\DetailsCommonDataTrait;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        return $this->middleware('admin');
+    }
+
     use DetailsCommonDataTrait;
     /**
      * Display a listing of the resource.
