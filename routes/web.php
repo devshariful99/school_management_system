@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Backend\Admin\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Backend\Admin\DashboardController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
+use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,5 +31,8 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::group(['as' => 'am.', 'prefix' => 'admin-management'], function () {
         Route::resource('admin', AdminController::class);
         Route::get('admin/status/{admin}', [AdminController::class, 'status'])->name('admin.status');
+
+        Route::resource('role', RoleController::class);
+        Route::get('role/status/{role}', [RoleController::class, 'status'])->name('role.status');
     });
 });

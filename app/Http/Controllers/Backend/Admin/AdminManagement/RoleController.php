@@ -1,20 +1,21 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class {{ class }} extends Controller
+class RoleController extends Controller
 {
     public function __construct()
     {
         $this->middleware('admin');
-        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index', 'show']]);
-        $this->middleware('permission:product-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:product-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:product-status', ['only' => ['status']]);
+        // $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'show']]);
+        // $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        // $this->middleware('permission:role-status', ['only' => ['status']]);
     }
 
     /**
@@ -22,7 +23,8 @@ class {{ class }} extends Controller
      */
     public function index()
     {
-        //
+        $data['roles'] = Role::with('created_admin')->latest()->get();
+        return view('backend.admin.admin_management.role.index', $data);
     }
 
     /**
