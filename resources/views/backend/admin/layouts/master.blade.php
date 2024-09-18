@@ -48,6 +48,21 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                showAlert('success', '{{ session('success') }}');
+            @endif
+
+            @if(session('error'))
+                showAlert('error', '{{ session('error') }}');
+            @endif
+
+            @if(session('warning'))
+                showAlert('warning', '{{ session('warning') }}');
+            @endif
+        });
+    </script>
 </head>
 
 <body>
@@ -202,6 +217,8 @@
         fillColor: "rgba(255, 165, 52, .14)",
     });
 </script> --}}
+{{-- Sweet Alert  --}}
+
 {{-- Custom Js  --}}
 <script src="{{ asset('backend/admin/assets/js/custom.js') }}"></script>
 @stack('js')

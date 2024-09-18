@@ -61,7 +61,8 @@ class AdminController extends Controller
         $admin->password = $req->password;
         $admin->created_by = auth()->guard('admin')->user()->id;
         $admin->save();
-        return redirect()->route('am.admin.index')->withStatus(__('Admin updated successfully'));
+        session()->flash('success', 'Admin created successfully!');
+        return redirect()->route('am.admin.index');
     }
 
     /**
@@ -106,7 +107,8 @@ class AdminController extends Controller
         }
         $admin->updated_by = auth()->guard('admin')->user()->id;
         $admin->update();
-        return redirect()->route('am.admin.index')->withStatus(__('Admin updated successfully'));
+        session()->flash('success', 'Admin updated successfully!');
+        return redirect()->route('am.admin.index');
     }
 
     /**
