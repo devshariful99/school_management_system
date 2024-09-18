@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin')-Dashboard</title>
+    <title>@yield('title', 'Admin -Dashboard')</title>
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('backend/admin/assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
 
@@ -38,9 +38,13 @@
     {{-- <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/bootstrap.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/kaiadmin.min.css') }}" />
-
+    @stack('css_links')
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/demo.css') }}" />
+
+    {{-- Custom CSS   --}}
+    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/custom.css') }}">
+    @stack('css')
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -58,7 +62,9 @@
             <!-- End Header -->
 
             <div class="container">
-                @yield('content')
+                <div class="page-inner">
+                    @yield('content')
+                </div>
             </div>
 
             <!-- Footer -->
@@ -168,6 +174,7 @@
 
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
 <script src="{{ asset('backend/admin/assets/js/setting-demo.js') }}"></script>
+@stack('js_links')
 <script src="{{ asset('backend/admin/assets/js/demo.js') }}"></script>
 <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
@@ -197,5 +204,8 @@
         fillColor: "rgba(255, 165, 52, .14)",
     });
 </script>
+{{-- Custom Js  --}}
+<script src="{{ asset('backend/admin/assets/js/custom.js') }}"></script>
+@stack('js')
 
 </html>
