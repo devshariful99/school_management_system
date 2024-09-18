@@ -36,11 +36,11 @@
 
     <!-- CSS Files -->
     {{-- <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/bootstrap.min.css') }}" /> --}}
-    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/plugins.min.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/plugins.min.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/kaiadmin.min.css') }}" />
     @stack('css_links')
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/demo.css') }}" />
+    {{-- <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/demo.css') }}" /> --}}
 
     {{-- Custom CSS   --}}
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/custom.css') }}">
@@ -141,10 +141,8 @@
 
 <!--   Core JS Files   -->
 <script src="{{ asset('backend/admin/assets/js/core/jquery-3.7.1.min.js') }}"></script>
-{{-- <script src="{{ asset('backend/admin/assets/js/core/popper.min.js') }}"></script>
-<script src="{{ asset('backend/admin/assets/js/core/bootstrap.min.js') }}"></script> --}}
 
-<!-- jQuery Scrollbar -->
+{{-- <!-- jQuery Scrollbar -->
 <script src="{{ asset('backend/admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 
 <!-- Chart JS -->
@@ -160,23 +158,23 @@
 <script src="{{ asset('backend/admin/assets/js/plugin/datatables/datatables.min.js') }}"></script>
 
 <!-- Bootstrap Notify -->
-{{-- <script src="{{ asset('backend/admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script> --}}
+<script src="{{ asset('backend/admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script> --}}
 
-<!-- jQuery Vector Maps -->
+{{-- <!-- jQuery Vector Maps -->
 <script src="{{ asset('backend/admin/assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
-<script src="{{ asset('backend/admin/assets/js/plugin/jsvectormap/world.js') }}"></script>
+<script src="{{ asset('backend/admin/assets/js/plugin/jsvectormap/world.js') }}"></script> --}}
 
-<!-- Sweet Alert -->
-<script src="{{ asset('backend/admin/assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
+{{-- <!-- Sweet Alert -->
+<script src="{{ asset('backend/admin/assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script> --}}
 
 <!-- Kaiadmin JS -->
 <script src="{{ asset('backend/admin/assets/js/kaiadmin.min.js') }}"></script>
 
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<script src="{{ asset('backend/admin/assets/js/setting-demo.js') }}"></script>
+{{-- <script src="{{ asset('backend/admin/assets/js/setting-demo.js') }}"></script> --}}
 @stack('js_links')
-<script src="{{ asset('backend/admin/assets/js/demo.js') }}"></script>
-<script>
+{{-- <script src="{{ asset('backend/admin/assets/js/demo.js') }}"></script> --}}
+{{-- <script>
     $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
         height: "70",
@@ -203,7 +201,7 @@
         lineColor: "#ffa534",
         fillColor: "rgba(255, 165, 52, .14)",
     });
-</script>
+</script> --}}
 {{-- Custom Js  --}}
 <script src="{{ asset('backend/admin/assets/js/custom.js') }}"></script>
 @stack('js')
