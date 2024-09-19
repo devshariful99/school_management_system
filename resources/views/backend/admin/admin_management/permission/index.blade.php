@@ -29,7 +29,7 @@
                                         <td>{{ $permission->prefix }}</td>
                                         <td>{{ $permission->name }}</td>
                                         <td>{{ timeFormat($permission->created_at) }}</td>
-                                        <td>{{ c_user_name($permission->created_user) }}</td>
+                                        <td>{{ c_user_name($permission->created_admin) }}</td>
                                          <td class="text-center">
                                         <div class="btn-group">
                                             <a href="javascript:void(0)" class="btn btn-primary btn-rounded "
@@ -145,7 +145,7 @@
                         $('.view_modal').modal('show');
                     },
                     error: function(xhr, status, error) {
-                        console.error('Error fetching user data:', error);
+                        console.error('Error fetching permission data:', error);
                     }
                 });
             });
