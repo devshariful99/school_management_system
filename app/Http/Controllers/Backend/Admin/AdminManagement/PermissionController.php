@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PermissionRequest;
+use App\Http\Requests\Admin\PermissionRequest;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Traits\DetailsCommonDataTrait;
@@ -94,6 +94,6 @@ class PermissionController extends Controller
         $permission->deleted_by = auth()->guard('admin')->user()->id;
         $permission->save();
         $permission->delete();
-        return redirect()->route('am.permssion.index')->withStatus(__('Permission deleted successfully'));
+        return redirect()->route('am.permission.index')->withStatus(__('Permission deleted successfully'));
     }
 }

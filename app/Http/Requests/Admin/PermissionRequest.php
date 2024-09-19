@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,9 +22,21 @@ class PermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
             'prefix' => 'required',
 
+        ]+($this->isMethod('POST') ? $this->store() : $this->update());
+    }
+    protected function store(): array
+    {
+        return [
+            'name' => 'required|unique:permissions,name',
+        ];
+    }
+
+    protected function update(): array
+    {
+        return [
+            'name' => 'required|unique:permissions,name,' . $this->route('permission'),
         ];
     }
 }
