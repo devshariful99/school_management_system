@@ -34,13 +34,13 @@
                 </a>
               </li>
 
-               <li class="nav-item  @if($page_slug == 'admin' || $page_slug == 'role') active submenu @endif">
+               <li class="nav-item  @if($page_slug == 'admin' || $page_slug == 'role' || $page_slug == 'permission') active submenu @endif">
                 <a data-bs-toggle="collapse" href="#admin_management" @if($page_slug == 'admin') aria-expanded="true" @endif>
                   <i class="fas fa-bars"></i>
                   <p>Admin Management</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse @if($page_slug == 'admin' || $page_slug == 'role') show @endif" id="admin_management">
+                <div class="collapse @if($page_slug == 'admin' || $page_slug == 'role' || $page_slug == 'permission') show @endif" id="admin_management">
                   <ul class="nav nav-collapse">
                     <li class="@if($page_slug == 'admin') active @endif">
                       <a href="{{route('am.admin.index')}}">
@@ -50,6 +50,11 @@
                     <li class="@if($page_slug == 'role') active @endif">
                       <a href="{{route('am.role.index')}}">
                         <span class="sub-item">Role</span>
+                      </a>
+                    </li>
+                    <li class="@if($page_slug == 'permission') active @endif">
+                      <a href="{{route('am.permission.index')}}">
+                        <span class="sub-item">Permission</span>
                       </a>
                     </li>
                   </ul>
