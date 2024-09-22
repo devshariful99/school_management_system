@@ -115,7 +115,6 @@ class AdminController extends Controller
         $admin->syncRoles($admin->role->name);
         session()->flash('success', 'Admin updated successfully!');
         return redirect()->route('am.admin.index');
-        
     }
 
     /**
@@ -127,13 +126,15 @@ class AdminController extends Controller
         $admin->deleted_by = auth()->guard('admin')->user()->id;
         $admin->save();
         $admin->delete();
-        return redirect()->route('am.admin.index')->withStatus(__('Admin deleted successfully'));
+        session()->flash('success', 'Admin deleted successfully!');
+        return redirect()->route('am.admin.index');
     }
 
     public function status(int $id)
     {
         $admin = Admin::findOrFail($id);
         $this->statusChange($admin);
-        return redirect()->route('am.admin.index')->withStatus(__('Admin status updated successfully'));
+        session()->flash('success', 'Admin status updated successfully!');
+        return redirect()->route('am.admin.index');
     }
 }

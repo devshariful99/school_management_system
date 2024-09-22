@@ -49,7 +49,8 @@ class PermissionController extends Controller
         $permission->guard_name = 'admin';
         $permission->created_by = auth()->guard('admin')->user()->id;
         $permission->save();
-        return redirect()->route('am.permission.index')->withStatus(__('$permission->name permission created successfully'));
+        session()->flash('success', "$permission->name permission created successfully");
+        return redirect()->route('am.permission.index');
     }
 
     /**
@@ -82,7 +83,8 @@ class PermissionController extends Controller
         $permission->guard_name = 'admin';
         $permission->updated_by = auth()->guard('admin')->user()->id;
         $permission->save();
-        return redirect()->route('am.permission.index')->withStatus(__('$permission->name permission updated successfully'));
+        session()->flash('success', "$permission->name permission updated successfully");
+        return redirect()->route('am.permission.index');
     }
 
     /**
@@ -94,6 +96,7 @@ class PermissionController extends Controller
         $permission->deleted_by = auth()->guard('admin')->user()->id;
         $permission->save();
         $permission->delete();
-        return redirect()->route('am.permission.index')->withStatus(__('Permission deleted successfully'));
+        session()->flash('success', "$permission->name permission deleted successfully");
+        return redirect()->route('am.permission.index');
     }
 }

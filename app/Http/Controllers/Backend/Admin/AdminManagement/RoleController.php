@@ -13,11 +13,11 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
-        // $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'show']]);
-        // $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
-        // $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
-        // $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-        // $this->middleware('permission:role-status', ['only' => ['status']]);
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:role-status', ['only' => ['status']]);
     }
 
     /**
@@ -26,11 +26,6 @@ class RoleController extends Controller
     public function index()
     {
          $data['roles'] = Role::with(['permissions', 'created_admin'])->latest()->get();
-            // ->each(function ($role) {
-            //     $permissionNames = $role->permissions->pluck('name')->implode(' | ');
-            //     $role->permissionNames = $permissionNames;
-            //     return $role;
-            // });
         return view('backend.admin.admin_management.role.index', $data);
     }
 
@@ -59,7 +54,8 @@ class RoleController extends Controller
 
         $permissions = Permission::whereIn('id', $request->permissions)->pluck('name')->toArray();
         $role->givePermissionTo($permissions);
-        return redirect()->route('am.role.index')->withStatus(__('$role->name role created successfully'));
+        session()->flash('success', "$role->name role created successfully");
+        return redirect()->route('am.role.index');
     }
 
     // /**
@@ -97,18 +93,18 @@ class RoleController extends Controller
         $role->save();
         $permissions = Permission::whereIn('id', $request->permissions)->pluck('name')->toArray();
         $role->syncPermissions($permissions);
-        return redirect()->route('am.role.index')->withStatus(__('$role->name role updated successfully'));
+        session()->flash('success', "$role->name role updated successfully");
+        return redirect()->route('am.role.index');
     }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id)
-    // {
-    //      $role = Role::findOrFail($id);
-    //     $role->delete();
 
-    //     flash()->addSuccess($role->name . ' role deleted successfully.');
-    //     return redirect()->route('am.role.role_list');
-    // }
+    public function destroy(string $id)
+    {
+        $role = Role::findOrFail($id);
+        $role->deleted_by = auth()->guard('admin')->user()->id;
+        $role->save();
+        $role->delete();
+        session()->flash('success', 'Role deleted successfully!');
+        return redirect()->route('am.role.index');
+    }
 }

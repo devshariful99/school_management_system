@@ -42,11 +42,11 @@
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="javascript:void(0)"
-                                                        onclick="document.getElementById('delete-form').submit();">
+                                                    onclick="confirmDelete(() => document.getElementById('delete-form-{{ $role->id }}').submit())">
                                                         {{ __('Delete') }}
                                                     </a>
 
-                                                    <form id="delete-form"
+                                                    <form id="delete-form-{{ $role->id }}"
                                                         action="{{ route('am.role.destroy', $role->id) }}" method="POST"
                                                         class="d-none">
                                                         @csrf
