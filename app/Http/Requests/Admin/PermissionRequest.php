@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminRequest extends FormRequest
+class PermissionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,29 +22,21 @@ class AdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:4',
-            'role' => 'required|exists:roles,id',
+            'prefix' => 'required',
 
-        ]
-            +
-            ($this->isMethod('POST') ? $this->store() : $this->update());
+        ]+($this->isMethod('POST') ? $this->store() : $this->update());
     }
-
     protected function store(): array
     {
         return [
-            'email' => 'required|unique:admins,email',
-            'password' => 'required|min:6|confirmed',
-            'image' => 'required|image|mimes:jpeg,png,gif,jpg,webp',
+            'name' => 'required|unique:permissions,name',
         ];
     }
 
     protected function update(): array
     {
         return [
-            'email' => 'required|unique:admins,email,' . $this->route('admin'),
-            'password' => 'nullable|min:6|confirmed',
-            'image' => 'nullable|image|mimes:jpeg,png,gif,jpg,webp',
+            'name' => 'required|unique:permissions,name,' . $this->route('permission'),
         ];
     }
 }

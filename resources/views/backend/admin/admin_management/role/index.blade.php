@@ -15,7 +15,6 @@
                             <tr>
                                 <th>{{ __('SL') }}</th>
                                 <th>{{ __('Name') }}</th>
-                                <th>{{ __('Status') }}</th>
                                 <th>{{ __('Created Date') }}</th>
                                 <th>{{ __('Created By') }}</th>
                                 <th>{{ __('Action') }}</th>
@@ -26,9 +25,6 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $role->name }}</td>
-                                    <td><span
-                                            class="{{ $role->getStatusBadgeBg() }}">{{ $role->getStatusBadgeTitle() }}</span>
-                                    </td>
                                     <td>{{ timeFormat($role->created_at) }}</td>
                                     <td>{{ c_user_name($role->created_admin) }}</td>
                                     
@@ -43,9 +39,6 @@
                                                         class="dropdown-item view">{{ __('Details') }}</a></li>
                                                 <li><a href="{{ route('am.role.edit', $role->id) }}"
                                                         class="dropdown-item">{{ __('Edit') }}</a>
-                                                </li>
-                                                <li><a href="{{ route('am.role.status', $role->id) }}"
-                                                        class="dropdown-item">{{ $role->getStatusBtnTitle() }}</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="javascript:void(0)"

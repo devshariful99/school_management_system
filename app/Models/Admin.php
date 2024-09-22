@@ -20,6 +20,7 @@ class Admin extends AuthBaseModel
         'email',
         'password',
     ];
+    protected $guard_name = 'admin';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,5 +43,9 @@ class Admin extends AuthBaseModel
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class, 'role_id');
     }
 }
