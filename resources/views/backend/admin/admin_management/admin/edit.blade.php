@@ -19,6 +19,16 @@
                             @include('alerts.feedback', ['field' => 'name'])
                         </div>
                         <div class="form-group">
+                            <label>{{ __('Role') }}</label>
+                            <select name="role" class="form-control">
+                                <option value="" selected hidden>{{__('Select Role')}}</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{$role->id}}" {{$admin->role_id == $role->id ? 'selected' : ''}}>{{$role->name}}</option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'role'])
+                        </div>
+                        <div class="form-group">
                             <label>{{ __('Image') }}</label>
                             <input type="file" accept="image/*" name="image" class="form-control">
                             @include('alerts.feedback', ['field' => 'image'])
@@ -34,12 +44,12 @@
                         </div>
                         <div class="form-group">
                             <label>{{ __('Password') }}</label>
-                            <input type="text" name="password" class="form-control" placeholder="Enter password">
+                            <input type="password" name="password" class="form-control" placeholder="Enter password">
                             @include('alerts.feedback', ['field' => 'password'])
                         </div>
                         <div class="form-group">
                             <label>{{ __('Confirm Password') }}</label>
-                            <input type="text" name="password_confirmation" class="form-control"
+                            <input type="password" name="password_confirmation" class="form-control"
                                 placeholder="Enter confirm password">
                         </div>
                         <div class="form-group float-end">

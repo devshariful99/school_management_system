@@ -23,6 +23,7 @@ class AdminRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:4',
+            'role' => 'required|exists:roles,id',
 
         ]
             +
