@@ -6,7 +6,11 @@
             <div class="card ">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Permission List') }}</h4>
-                    <a href="{{route('am.permission.create')}}" class="btn btn-sm btn-primary">Add New</a>
+                    @include('backend.admin.includes.button', [
+                            'routeName' => 'am.permission.create',
+                            'label' => 'Add New',
+                            'permissions'=>['permission-create'],
+                        ])
                 </div>
                 <div class="card-body">
 
@@ -30,34 +34,33 @@
                                         <td>{{ $permission->name }}</td>
                                         <td>{{ timeFormat($permission->created_at) }}</td>
                                         <td>{{ c_user_name($permission->created_admin) }}</td>
-                                         <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-primary btn-rounded "
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="icon-options-vertical"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a href="javascript:void(0)" data-id="{{ $permission->id }}"
-                                                        class="dropdown-item view">{{ __('Details') }}</a></li>
-                                                <li><a href="{{ route('am.permission.edit', $permission->id) }}"
-                                                        class="dropdown-item">{{ __('Edit') }}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0)"
-                                                    onclick="confirmDelete(() => document.getElementById('delete-form-{{ $permission->id }}').submit())">
-                                                        {{ __('Delete') }}
-                                                    </a>
-
-                                                    <form id="delete-form-{{ $permission->id }}"
-                                                        action="{{ route('am.permission.destroy', $permission->id) }}" method="POST"
-                                                        class="d-none">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
+                                        <td class="text-center">
+                                          @include('backend.admin.includes.action_buttons', [
+                                            'menuItems' => [
+                                                [
+                                                    'routeName' => 'javascript:void(0)',
+                                                    'data-id' => $permission->id,
+                                                    'className' => 'view',
+                                                    'label' => 'Details',
+                                                    'permissions'=>['permission-list','permission-delete']
+                                                ],
+                                                [
+                                                    'routeName' => 'am.permission.edit',
+                                                    'params' => [$permission->id],
+                                                    'label' => 'Edit',
+                                                    'permissions'=>['permission-edit']
+                                                ],
+                                                
+                                                [
+                                                    'routeName' => 'am.permission.destroy',
+                                                    'params' => [$permission->id],
+                                                    'label' => 'Delete',
+                                                    'delete' => true,
+                                                    'permissions'=>['permission-delete']
+                                                ]
+                                            ],
+                                        ])
+                                        </td>
                                     </tr>
                                 @endforeach
 

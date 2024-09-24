@@ -6,7 +6,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Edit Permission') }}</h4>
-                    <a href="{{route('am.permission.index')}}" class="btn btn-sm btn-primary">Back</a>
+                    @include('backend.admin.includes.button', [
+                            'routeName' => 'am.permission.index',
+                            'label' => 'Back',
+                            'permissions'=>['permission-list','permission-delete','permission-status'],
+                        ])
                 </div>
                 <form method="POST" action="{{ route('am.permission.update',$permission->id) }}">
                     @method('PUT')

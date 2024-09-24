@@ -6,7 +6,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Edit Admin') }}</h4>
-                    <a href="{{ route('am.admin.index') }}" class="btn btn-sm btn-primary">{{ __('Back') }}</a>
+                     @include('backend.admin.includes.button', [
+                            'routeName' => 'am.admin.index',
+                            'label' => 'Back',
+                            'permissions'=>['admin-list','admin-delete','admin-status'],
+                        ])
                 </div>
                 <div class="card-body">
                     <form action="{{ route('am.admin.update', $admin->id) }}" method="POST" enctype="multipart/form-data">

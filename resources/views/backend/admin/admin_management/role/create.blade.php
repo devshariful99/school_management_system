@@ -35,7 +35,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Create Role') }}</h4>
-                    <a href="{{route('am.role.index')}}" class="btn btn-sm btn-primary">Back</a>
+                    @include('backend.admin.includes.button', [
+                            'routeName' => 'am.role.index',
+                            'label' => 'Back',
+                            'permissions'=>['role-list','role-delete','role-status'],
+                        ])
                 </div>
                 <form method="POST" action="{{ route('am.role.store') }}">
                     @csrf

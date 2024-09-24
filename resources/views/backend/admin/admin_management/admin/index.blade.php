@@ -6,7 +6,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">Admin List</h4>
-                    <a href="{{ route('am.admin.create') }}" class="btn btn-sm btn-primary">Add New</a>
+                    @include('backend.admin.includes.button', [
+                            'routeName' => 'am.admin.create',
+                            'label' => 'Add New',
+                            'permissions'=>['admin-create'],
+                        ])
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped">
@@ -34,35 +38,37 @@
                                     <td>{{ c_user_name($admin->created_admin) }}</td>
                                     
                                     <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-primary btn-rounded "
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="icon-options-vertical"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a href="javascript:void(0)" data-id="{{ $admin->id }}"
-                                                        class="dropdown-item view">{{ __('Details') }}</a></li>
-                                                <li><a href="{{ route('am.admin.edit', $admin->id) }}"
-                                                        class="dropdown-item">{{ __('Edit') }}</a>
-                                                </li>
-                                                <li><a href="{{ route('am.admin.status', $admin->id) }}"
-                                                        class="dropdown-item">{{ $admin->getStatusBtnTitle() }}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0)"
-                                                    onclick="confirmDelete(() => document.getElementById('delete-form-{{ $admin->id }}').submit())">
-                                                        {{ __('Delete') }}
-                                                    </a>
-
-                                                    <form id="delete-form-{{ $admin->id }}"
-                                                        action="{{ route('am.admin.destroy', $admin->id) }}" method="POST"
-                                                        class="d-none">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                          @include('backend.admin.includes.action_buttons', [
+                                            'menuItems' => [
+                                                [
+                                                    'routeName' => 'javascript:void(0)',
+                                                    'data-id' => $admin->id,
+                                                    'className' => 'view',
+                                                    'label' => 'Details',
+                                                    'permissions'=>['admin-list','admin-delete','admin-status']
+                                                ],
+                                                [
+                                                    'routeName' => 'am.admin.status',
+                                                    'params' => [$admin->id],
+                                                    'label' => $admin->getStatusBtnTitle(),
+                                                    'permissions'=>['admin-status']
+                                                ],
+                                                [
+                                                    'routeName' => 'am.admin.edit',
+                                                    'params' => [$admin->id],
+                                                    'label' => 'Edit',
+                                                    'permissions'=>['admin-edit']
+                                                ],
+                                                
+                                                [
+                                                    'routeName' => 'am.admin.destroy',
+                                                    'params' => [$admin->id],
+                                                    'label' => 'Delete',
+                                                    'delete' => true,
+                                                    'permissions'=>['admin-delete']
+                                                ]
+                                            ],
+                                        ])
                                     </td>
                                 </tr>
                             @endforeach
