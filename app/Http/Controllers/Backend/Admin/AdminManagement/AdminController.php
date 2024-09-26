@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Backend\Admin\AdminManagement;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Models\Admin;
-use Illuminate\Http\Request;
 use App\Http\Traits\DetailsCommonDataTrait;
 use App\Models\Role;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
@@ -25,15 +26,67 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['admins'] = Admin::with('created_admin')->latest()->get();
-        // $admins = Admin::latest()->get();
-        // $students = Admin::latest()->get();
-        // return view('backend.admin.admin_management.admin.index', compact('admins','students'));
-        // return view('backend.admin.admin_management.admin.index',['admins'=> $admins, 'students'=>$students]);
-        return view('backend.admin.admin_management.admin.index', $data);
+        $admins = Admin::all();
+        if ($request->ajax()) {
+            $admins = $admins->sortBy('sort_order');
+            return DataTables::of($admins)
+                ->editColumn('status', function ($admin) {
+                    return "<span class='" . $admin->getStatusBadgeBg() . "'>" . $admin->getStatusBadgeTitle() . "</span>";
+                })
+                ->editColumn('created_at', function ($admin) {
+                    return timeFormat($admin->created_at);
+                })
+                ->editColumn('created_by', function ($admin) {
+                    return creater_name($admin->creater_admin);
+                })
+                ->editColumn('action', function ($admin) {
+                    return view('backend.admin.includes.action_buttons', [
+                        'menuItems' => [
+                            [
+                                'routeName' => 'javascript:void(0)',
+                                'data-id' => $admin->id,
+                                'className' => 'view',
+                                'label' => 'Details',
+                                'permissions'=>['admin-list','admin-delete','admin-status']
+                            ],
+                            [
+                                'routeName' => 'am.admin.status',
+                                'params' => [$admin->id],
+                                'label' => $admin->getStatusBtnTitle(),
+                                'permissions'=>['admin-status']
+                            ],
+                            [
+                                'routeName' => 'am.admin.edit',
+                                'params' => [$admin->id],
+                                'label' => 'Edit',
+                                'permissions'=>['admin-edit']
+                            ],
+                            
+                            [
+                                'routeName' => 'am.admin.destroy',
+                                'params' => [$admin->id],
+                                'label' => 'Delete',
+                                'delete' => true,
+                                'permissions'=>['admin-delete']
+                            ]
+                        ],
+                    ]);
+                })
+                ->rawColumns(['status', 'created_at', 'created_by', 'action'])
+                ->make(true);
+        }
+        return view('backend.admin.admin_management.admin.index', compact('admins'));
     }
+
+
+
+    // ('backend.admin.includes.action_buttons', [
+    //     'menuItems' => [
+    //        
+    //     ],
+    // ])
 
     /**
      * Show the form for creating a new resource.

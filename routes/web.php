@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Admin\DashboardController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
+use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,7 @@ Route::controller(AdminLoginController::class)->prefix('admin')->name('admin.')-
 
 Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
 
+    Route::post('update/sort/order', [AdminDatatableController::class, 'updateSortOrder'])->name('update.sort.order');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
     // Admin Management

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\LoginRequest;
 use App\Models\Admin;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class LoginController extends Controller
         return view('backend.admin.login');
     }
 
-    public function adminLoginCheck(Request $request): RedirectResponse
+    public function adminLoginCheck(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
         $check = Admin::where('email', $request->email)->first();

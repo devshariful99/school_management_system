@@ -13,7 +13,7 @@
                         ])
                 </div>
                 <div class="card-body">
-                    <table class="table table-responsive table-striped">
+                    <table class="table table-responsive table-striped datatable">
                         <thead>
                             <tr>
                                 <th>{{ __('SL') }}</th>
@@ -26,7 +26,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($admins as $admin)
+                            {{-- @foreach ($admins as $admin)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $admin->name }}</td>
@@ -35,7 +35,7 @@
                                             class="{{ $admin->getStatusBadgeBg() }}">{{ $admin->getStatusBadgeTitle() }}</span>
                                     </td>
                                     <td>{{ timeFormat($admin->created_at) }}</td>
-                                    <td>{{ c_user_name($admin->created_admin) }}</td>
+                                    <td>{{ creater_name($admin->created_admin) }}</td>
                                     
                                     <td class="text-center">
                                           @include('backend.admin.includes.action_buttons', [
@@ -71,7 +71,7 @@
                                         ])
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -82,64 +82,58 @@
     @include('backend.admin.includes.details_modal', ['modal_title' => 'Admin Details'])
 @endsection
 @push('js')
+    {{-- Datatable Scripts --}}
+    <script src="{{ asset('datatable/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('.view').on('click', function() {
-                let id = $(this).data('id');
-                let url = ("{{ route('am.admin.show', ['id']) }}");
-                let _url = url.replace('id', id);
-                $.ajax({
-                    url: _url,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var result = `
-                                <table class="table table-striped">
-                                    <tr>
-                                        <th class="text-nowrap">Name</th>
-                                        <th>:</th>
-                                        <td>${data.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Email</th>
-                                        <th>:</th>
-                                        <td>${data.email}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Status</th>
-                                        <th>:</th>
-                                        <td><span class="badge ${data.statusBadgeBg}">${data.statusBadgeTitle}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Created Date</th>
-                                        <th>:</th>
-                                        <td>${data.creating_time}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Created By</th>
-                                        <th>:</th>
-                                        <td>${data.created_by}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Updated Date</th>
-                                        <th>:</th>
-                                        <td>${data.updating_time}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-nowrap">Updated By</th>
-                                        <th>:</th>
-                                        <td>${data.updated_by}</td>
-                                    </tr>
-                                </table>
-                                `;
-                        $('.modal_data').html(result);
-                        $('.view_modal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching admin data:', error);
-                    }
-                });
-            });
+            let table_columns = [
+                //name and data, orderable, searchable
+                ['name', true, true],
+                ['email', true, true],
+                ['status', true, true],
+                ['created_at', false, false],
+                ['created_by', true, true],
+                ['action', false, false],
+            ];
+            const details = {
+                table_columns: table_columns,
+                main_class: '.datatable',
+                displayLength: 10,
+                main_route: "{{ route('am.admin.index') }}",
+                order_route: "{{ route('update.sort.order') }}",
+                export_columns: [0, 1, 2, 3, 4, 5],
+                model: 'Admin',
+            };
+            initializeDataTable(details);
+        })
+    </script>
+@endpush
+@push('js')
+    {{-- Show details scripts --}}
+    <script src="{{ asset('modal/details_modal.js') }}"></script>
+    <script>
+        // Event listener for viewing details
+        $(document).on("click", ".view", function() {
+            let id = $(this).data("id");
+            let route = "{{ route('am.admin.show', ['id']) }}";
+            const detailsUrl = route.replace("id", id);
+            const headers = [{
+                    label: "Name",
+                    key: "name"
+                },
+                {
+                    label: "Email",
+                    key: "email"
+                },
+                {
+                    label: "Status",
+                    key: "statusBadgeTitle",
+                    badge: true,
+                    badgeClass: 'statusBadgeBg',
+                },
+            ];
+            fetchAndShowModal(detailsUrl, headers, "modal_wrap_id", "modal_id");
         });
     </script>
 @endpush
+
