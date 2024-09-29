@@ -28,7 +28,7 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $admins = Admin::all();
+        $admins = Admin::with(['created_admin'])->get();
         if ($request->ajax()) {
             $admins = $admins->sortBy('sort_order');
             return DataTables::of($admins)

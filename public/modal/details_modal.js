@@ -57,5 +57,5 @@ function showModalWithData(headers, data, modal_wrap_id, modalId) {
     `;
 
     $("#" + modal_wrap_id).html(result);
-    showModal(modalId);
+    showModal("#" + modalId);
 }

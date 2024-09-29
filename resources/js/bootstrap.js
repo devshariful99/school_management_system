@@ -1,4 +1,14 @@
-import 'bootstrap';
+import * as bootstrap from "bootstrap";
+window.bootstrap = bootstrap;
+
+/**
+ * Shows a modal by ID
+ * @param {string} modal_id - the id of the modal element
+ */
+window.showModal = function (modal_id) {
+    var myModal = new bootstrap.Modal(document.getElementById(modal_id));
+    myModal.show();
+};
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,10 +16,10 @@ import 'bootstrap';
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
+import axios from "axios";
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

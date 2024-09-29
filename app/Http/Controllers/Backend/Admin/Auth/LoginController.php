@@ -20,7 +20,7 @@ class LoginController extends Controller
         return view('backend.admin.login');
     }
 
-    public function adminLoginCheck(LoginRequest $request): RedirectResponse
+    public function adminLoginCheck(Request $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
         $check = Admin::where('email', $request->email)->first();

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\PermissionRequest;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Traits\DetailsCommonDataTrait;
+use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
 {
@@ -24,10 +25,51 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request)
     {
-         $data['permissions'] = Permission::with(['created_admin'])->orderBy('prefix')->get();
-        return view('backend.admin.admin_management.permission.index', $data);
+        //  $data['permissions'] = Permission::with(['created_admin'])->orderBy('prefix')->get();
+
+          $permissions = Permission::with('created_admin')->get();
+        if ($request->ajax()) {
+            $permissions = $permissions->sortBy('sort_order');
+            return DataTables::of($permissions)
+                ->editColumn('created_at', function ($permission) {
+                    return timeFormat($permission->created_at);
+                })
+                ->editColumn('created_by', function ($permission) {
+                    return creater_name($permission->creater_admin);
+                })
+                ->editColumn('action', function ($permission) {
+                    return view('backend.admin.includes.action_buttons', [
+                        'menuItems' => [
+                            [
+                                'routeName' => 'javascript:void(0)',
+                                'data-id' => $permission->id,
+                                'className' => 'view',
+                                'label' => 'Details',
+                                'permissions'=>['permission-list','permission-delete']
+                            ],
+                            [
+                                'routeName' => 'am.permission.edit',
+                                'params' => [$permission->id],
+                                'label' => 'Edit',
+                                'permissions'=>['permission-edit']
+                            ],
+                            
+                            [
+                                'routeName' => 'am.permission.destroy',
+                                'params' => [$permission->id],
+                                'label' => 'Delete',
+                                'delete' => true,
+                                'permissions'=>['permission-delete']
+                            ]
+                        ],
+                    ]);
+                })
+                ->rawColumns(['created_at', 'created_by', 'action'])
+                ->make(true);
+        }
+        return view('backend.admin.admin_management.permission.index', compact('permissions'));
     }
 
     /**
