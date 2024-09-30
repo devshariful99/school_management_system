@@ -6,12 +6,12 @@
             <div class="card">
                 @include('alerts.success')
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="cart-title">{{__('Role List')}}</h4>
-                     @include('backend.admin.includes.button', [
-                            'routeName' => 'am.role.index',
-                            'label' => 'Add New',
-                            'permissions'=>['role-create'],
-                        ])
+                    <h4 class="cart-title">{{ __('Role List') }}</h4>
+                    @include('backend.admin.includes.button', [
+                        'routeName' => 'am.role.create',
+                        'label' => 'Add New',
+                        'permissions' => ['role-create'],
+                    ])
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped">
@@ -31,30 +31,30 @@
                                     <td>{{ $role->name }}</td>
                                     <td>{{ timeFormat($role->created_at) }}</td>
                                     <td>{{ creater_name($role->created_admin) }}</td>
-                                    
+
                                     <td class="text-center">
-                                          @include('backend.admin.includes.action_buttons', [
+                                        @include('backend.admin.includes.action_buttons', [
                                             'menuItems' => [
                                                 [
                                                     'routeName' => 'javascript:void(0)',
                                                     'data-id' => $role->id,
                                                     'className' => 'view',
                                                     'label' => 'Details',
-                                                    'permissions'=>['role-list','role-delete']
+                                                    'permissions' => ['role-list', 'role-delete'],
                                                 ],
                                                 [
                                                     'routeName' => 'am.role.edit',
                                                     'params' => [$role->id],
                                                     'label' => 'Edit',
-                                                    'permissions'=>['role-edit']
+                                                    'permissions' => ['role-edit'],
                                                 ],
-                                                
+                                        
                                                 [
                                                     'routeName' => 'am.role.destroy',
                                                     'params' => [$role->id],
                                                     'label' => 'Delete',
                                                     'delete' => true,
-                                                    'permissions'=>['role-delete']
+                                                    'permissions' => ['role-delete'],
                                                 ],
                                             ],
                                         ])
