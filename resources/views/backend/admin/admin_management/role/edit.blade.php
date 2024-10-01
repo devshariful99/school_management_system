@@ -36,11 +36,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Edit Role') }}</h4>
-                     @include('backend.admin.includes.button', [
-                            'routeName' => 'am.role.index',
-                            'label' => 'Back',
-                            'permissions'=>['role-list','role-delete','role-status'],
-                        ])
+                    @include('backend.admin.includes.button', [
+                        'routeName' => 'am.role.index',
+                        'label' => 'Back',
+                        'permissions' => ['role-list', 'role-delete', 'role-status'],
+                    ])
                 </div>
                 <form method="POST" action="{{ route('am.role.update', $role->id) }}" autocomplete="off">
                     @method('PUT')
@@ -71,10 +71,11 @@
                                                         <li class="ps-4">
                                                             <input type="checkbox" name="permissions[]"
                                                                 id="permission-checkbox-{{ $permission->id }}"
-                                                                value="{{ $permission->id }}" class="m-2 permission-checkbox"
+                                                                value="{{ $permission->id }}"
+                                                                class="m-2 permission-checkbox"
                                                                 @if ($role->hasPermissionTo($permission->name)) @checked(true) @endif>
                                                             <label
-                                                                for="permission-checkbox-{{ $permission->id }}">{{ Str::replace('_', ' ', $permission->name) }}</label>
+                                                                for="permission-checkbox-{{ $permission->id }}">{{ slugToTitle($permission->name) }}</label>
                                                         </li>
                                                     @endforeach
                                                 </ul>

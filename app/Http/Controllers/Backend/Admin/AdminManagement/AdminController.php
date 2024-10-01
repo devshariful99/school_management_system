@@ -129,6 +129,7 @@ class AdminController extends Controller
         $data = Admin::with(['creater_admin', 'updater_admin'])->findOrFail($id);
         $this->AdminAuditColumnsData($data);
         $this->statusColumnData($data);
+        $data->image = auth_storage_url($data->image);
         return response()->json($data);
     }
 

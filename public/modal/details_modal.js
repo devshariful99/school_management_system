@@ -25,7 +25,7 @@ function showModalWithData(headers, data, modalWrapId, modalId) {
     headers.push(...commonHeaders);
     const headerHtml = headers
         .map((header) => {
-            if (header.badge) {
+            if (header.type === "badge") {
                 return `
                     <tr>
                         <th class="text-nowrap">${header.label}</th>
@@ -33,6 +33,24 @@ function showModalWithData(headers, data, modalWrapId, modalId) {
                         <td><span class="badge ${data[header.badgeClass]}">${
                     data[header.key]
                 }</span></td>
+                    </tr>
+                `;
+            } else if (header.type === "image") {
+                return `
+                    <tr>
+                        <th class="text-nowrap">${header.label}</th>
+                        <th>:</th>
+                        <td>
+                            <div class="imagePreviewDiv d-inline-block">
+                                <div id="lightbox" class="lightbox">
+                                    <div class="lightbox-content">
+                                        <img src="${data[header.key]}"
+                                            class="lightbox_image">
+                                    </div>
+                                    <div class="close_button fa-beat">X</div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 `;
             } else {

@@ -1,5 +1,8 @@
 @extends('backend.admin.layouts.master', ['page_slug' => 'admin'])
 @section('title', 'Admin List')
+@push('css')
+    <link rel="stylesheet" href="{{ asset('custom_litebox/litebox.css') }}">
+@endpush
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -36,6 +39,7 @@
     @include('backend.admin.includes.details_modal', ['modal_title' => 'Admin Details'])
 @endsection
 @push('js')
+    <script src="{{ asset('custom_litebox/litebox.js') }}"></script>
     {{-- Datatable Scripts --}}
     <script src="{{ asset('datatable/main.js') }}"></script>
     <script>
@@ -76,13 +80,18 @@
                     key: "name"
                 },
                 {
+                    label: "Image",
+                    key: "image",
+                    type: "image"
+                },
+                {
                     label: "Email",
                     key: "email"
                 },
                 {
                     label: "Status",
                     key: "statusBadgeTitle",
-                    badge: true,
+                    type: "badge",
                     badgeClass: 'statusBadgeBg',
                 },
             ];
