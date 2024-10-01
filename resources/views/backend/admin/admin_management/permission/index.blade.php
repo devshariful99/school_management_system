@@ -6,11 +6,19 @@
             <div class="card ">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Permission List') }}</h4>
-                    @include('backend.admin.includes.button', [
+                    <div class="action_button">
+
+                        @include('backend.admin.includes.button', [
+                            'routeName' => 'permissions.export',
+                            'label' => 'Export Permissions CSV',
+                            'permissions' => ['permission-create'],
+                        ])
+                        @include('backend.admin.includes.button', [
                             'routeName' => 'am.permission.create',
                             'label' => 'Add New',
-                            'permissions'=>['permission-create'],
+                            'permissions' => ['permission-create'],
                         ])
+                    </div>
                 </div>
                 <div class="card-body">
 
@@ -89,4 +97,3 @@
         });
     </script>
 @endpush
-

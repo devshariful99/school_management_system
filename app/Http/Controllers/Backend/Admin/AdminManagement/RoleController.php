@@ -25,7 +25,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-         $data['roles'] = Role::with(['permissions', 'created_admin'])->latest()->get();
+        $data['roles'] = Role::with(['permissions', 'created_admin'])->latest()->get();
         return view('backend.admin.admin_management.role.index', $data);
     }
 
@@ -91,7 +91,7 @@ class RoleController extends Controller
         $role->name = $request->name;
         $role->updated_by = admin()->id;
         $role->save();
-        $permissions = Permission::whereIn('id', $request->permissions)->pluck('name')->toArray();
+        $permissions = Permission::whereIn('id', $request->permissions ?? [])->pluck('name')->toArray();
         $role->syncPermissions($permissions);
         session()->flash('success', "$role->name role updated successfully");
         return redirect()->route('am.role.index');

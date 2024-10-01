@@ -6,21 +6,26 @@
     </a>
     <ul class="dropdown-menu dropdown-menu-end">
 
-        @foreach ($menuItems as $key=>$menuItem)
+        @foreach ($menuItems as $key => $menuItem)
             @php
 
                 $check = false;
-                if(!isset($menuItem['permissions']) || !is_array($menuItem['permissions']) || count($menuItem['permissions']) == 0 || !admin()->hasAnyPermission($menuItem['permissions'])){
+                if (
+                    (!isset($menuItem['permissions']) ||
+                        !is_array($menuItem['permissions']) ||
+                        count($menuItem['permissions']) == 0 ||
+                        !admin()->hasAnyPermission($menuItem['permissions'])) &&
+                    !isSuperAdmin()
+                ) {
                     continue;
-                }elseif(isset($menuItem['permissions']) && is_array($menuItem['permissions']) && admin()->hasAnyPermission($menuItem['permissions'])){
+                } elseif (
+                    (isset($menuItem['permissions']) &&
+                        is_array($menuItem['permissions']) &&
+                        admin()->hasAnyPermission($menuItem['permissions'])) ||
+                    isSuperAdmin()
+                ) {
                     $check = true;
                 }
-
-
-
-
-
-
 
                 $parameterArray = isset($menuItem['params']) ? $menuItem['params'] : [];
                 if (!isset($menuItem['routeName']) || $menuItem['routeName'] == '' || $menuItem['routeName'] == null) {
@@ -46,7 +51,7 @@
                     <a target="{{ isset($menuItem['target']) ? $menuItem['target'] : '' }}"
                         title="{{ isset($menuItem['title']) ? $menuItem['title'] : '' }}"
                         href="{{ $delete == true ? 'javascript:void(0)' : $route }}"
-                         @if ($delete == true)onclick="confirmDelete(() => document.getElementById('{{ $div_id }}').submit())" @endif
+                        @if ($delete == true) onclick="confirmDelete(() => document.getElementById('{{ $div_id }}').submit())" @endif
                         class="dropdown-item {{ isset($menuItem['className']) ? $menuItem['className'] : '' }}"
                         @if (isset($menuItem['data-id'])) data-id="{{ $menuItem['data-id'] }}" @endif>{{ __($menuItem['label']) }}</a>
                     @if ($delete == true)

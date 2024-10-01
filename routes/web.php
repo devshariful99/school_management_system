@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
+use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,13 @@ Route::controller(AdminLoginController::class)->prefix('admin')->name('admin.')-
 
 
 Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
+
+    //Developer Routes
+    Route::get('/export-permissions', function () {
+        $filename = 'permissions.csv';
+        $filePath = createCSV($filename);
+        return Response::download($filePath, $filename);
+    })->name('permissions.export');
 
     Route::post('update/sort/order', [AdminDatatableController::class, 'updateSortOrder'])->name('update.sort.order');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
