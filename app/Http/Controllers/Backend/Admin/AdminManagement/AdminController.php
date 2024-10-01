@@ -9,9 +9,11 @@ use App\Http\Traits\DetailsCommonDataTrait;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Traits\FileManagementTrait;
 
 class AdminController extends Controller
 {
+    use FileManagementTrait;
     public function __construct()
     {
         $this->middleware('admin');
@@ -80,14 +82,6 @@ class AdminController extends Controller
         return view('backend.admin.admin_management.admin.index', compact('admins'));
     }
 
-
-
-    // ('backend.admin.includes.action_buttons', [
-    //     'menuItems' => [
-    //
-    //     ],
-    // ])
-
     /**
      * Show the form for creating a new resource.
      */
@@ -103,18 +97,12 @@ class AdminController extends Controller
     public function store(AdminRequest $req)
     {
         $admin = new Admin();
-        if ($req->hasFile('image')) {
-            $image = $req->file('image');
-            $imageName = $req->name . '_' . time() . '.' . $image->getClientOriginalExtension();
-            $folderName = 'admins/';
-            $path = $image->storeAs($folderName, $imageName, 'public');
-            $admin->image = $path;
-        }
+        $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
         $admin->role_id = $req->role;
         $admin->name = $req->name;
         $admin->email = $req->email;
         $admin->password = $req->password;
-        $admin->created_by = auth()->guard('admin')->user()->id;
+        $admin->created_by = admin()->id;
         $admin->save();
         $admin->assignRole($admin->role->name);
         session()->flash('success', 'Admin created successfully!');
@@ -149,23 +137,14 @@ class AdminController extends Controller
     public function update(AdminRequest $req, int $id)
     {
         $admin = Admin::findOrFail($id);
-        if ($req->hasFile('image')) {
-            $image = $req->file('image');
-            $imageName = $req->name . '_' . time() . '.' . $image->getClientOriginalExtension();
-            $folderName = 'admins/';
-            $path = $image->storeAs($folderName, $imageName, 'public');
-            if (!empty($admin->image)) {
-                $this->fileDelete($admin->image);
-            }
-            $admin->image = $path;
-        }
+        $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
         $admin->role_id = $req->role;
         $admin->name = $req->name;
         $admin->email = $req->email;
         if ($req->password) {
             $admin->password = $req->password;
         }
-        $admin->updated_by = auth()->guard('admin')->user()->id;
+        $admin->updated_by = admin()->id;
         $admin->update();
         $admin->syncRoles($admin->role->name);
         session()->flash('success', 'Admin updated successfully!');
@@ -178,7 +157,7 @@ class AdminController extends Controller
     public function destroy(int $id)
     {
         $admin = Admin::findOrFail($id);
-        $admin->deleted_by = auth()->guard('admin')->user()->id;
+        $admin->deleted_by = admin()->id;
         $admin->save();
         $admin->delete();
         session()->flash('success', 'Admin deleted successfully!');
@@ -188,7 +167,9 @@ class AdminController extends Controller
     public function status(int $id)
     {
         $admin = Admin::findOrFail($id);
-        $this->statusChange($admin);
+        $admin->status = !$admin->status;
+        $admin->updated_by = admin()->id;
+        $admin->update();
         session()->flash('success', 'Admin status updated successfully!');
         return redirect()->route('am.admin.index');
     }

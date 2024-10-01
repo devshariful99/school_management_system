@@ -11,6 +11,10 @@ function timeFormat($time)
 }
 function admin()
 {
+    return auth()->guard('web')->user();
+}
+function user()
+{
     return auth()->guard('admin')->user();
 }
 function creater_name($user)

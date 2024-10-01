@@ -7,32 +7,35 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Create Admin') }}</h4>
                     @include('backend.admin.includes.button', [
-                            'routeName' => 'am.admin.index',
-                            'label' => 'Back',
-                            'permissions'=>['admin-list','admin-delete','admin-status'],
-                        ])
+                        'routeName' => 'am.admin.index',
+                        'label' => 'Back',
+                        'permissions' => ['admin-list', 'admin-delete', 'admin-status'],
+                    ])
                 </div>
                 <div class="card-body">
                     <form action="{{ route('am.admin.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label>{{ __('Name') }}</label>
-                            <input type="text" value="{{old('name')}}" name="name" class="form-control" placeholder="Enter name">
+                            <input type="text" value="{{ old('name') }}" name="name" class="form-control"
+                                placeholder="Enter name">
                             @include('alerts.feedback', ['field' => 'name'])
                         </div>
                         <div class="form-group">
                             <label>{{ __('Role') }}</label>
                             <select name="role" class="form-control">
-                                <option value="" selected hidden>{{__('Select Role')}}</option>
+                                <option value="" selected hidden>{{ __('Select Role') }}</option>
                                 @foreach ($roles as $role)
-                                    <option value="{{$role->id}}" {{old('role') == $role->id ? 'selected' : ''}}>{{$role->name}}</option>
+                                    <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>
+                                        {{ $role->name }}</option>
                                 @endforeach
                             </select>
                             @include('alerts.feedback', ['field' => 'role'])
                         </div>
                         <div class="form-group">
                             <label>{{ __('Image') }}</label>
-                            <input type="file" accept="image/*" name="image" class="form-control">
+                            <input type="file" name="uploadImage" data-actualName="image" class="form-control filepond"
+                                id="image" accept="image/*">
                             @include('alerts.feedback', ['field' => 'image'])
                         </div>
                         <div class="form-group">
@@ -59,3 +62,54 @@
         </div>
     </div>
 @endsection
+{{-- Filepond  --}}
+@push('js')
+    <script>
+        function file_upload(selectors, name, creatorType, multipleFile = false) {
+            $.each(selectors.reverse(), function(index, selector) {
+                var actualName = $(selector).attr("data-actualName");
+
+                const inputElement = document.querySelector(selector);
+                const pond = FilePond.create(inputElement);
+                pond.setOptions({
+                    allowMultiple: multipleFile,
+                    server: {
+                        url: "/admin/file-management",
+                        process: {
+                            url: "/upload-temp-file",
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            },
+                            onload: (response_data) => {
+                                var f_selector = $('input[name="' + name + '"]');
+                                $(f_selector).attr("name", actualName);
+                                return response_data;
+                            },
+                            onerror: (response_data) => {
+                                console.log(response_data);
+                            },
+                            ondata: (formData) => {
+                                formData.append("name", name);
+                                formData.append("creatorType", creatorType);
+                                return formData;
+                            },
+                        },
+                        revert: {
+                            url: "/delete-temp-file",
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            },
+                            onerror: (response_data) => {
+                                console.log(response_data);
+                            },
+                        },
+                        fetch: null,
+                    },
+                });
+            });
+        }
+        file_upload(["#image"], "uploadImage", "admin");
+    </script>
+@endpush

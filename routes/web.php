@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
+use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
 use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
@@ -38,6 +39,15 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::post('update/sort/order', [AdminDatatableController::class, 'updateSortOrder'])->name('update.sort.order');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
+
+
+
+    // File Management
+    Route::controller(AdminFileManagementController::class)->prefix('file-management')->name('file.')->group(function () {
+        Route::post('/upload-temp-file', 'uploadTempFile')->name('upload_tf');
+        Route::delete('/delete-temp-file', 'deleteTempFile')->name('delete_tf');
+        Route::post('/reset-file-file', 'resetTempFile')->name('reset_tf');
+    });
     // Admin Management
     Route::group(['as' => 'am.', 'prefix' => 'admin-management'], function () {
         Route::resource('admin', AdminController::class);
