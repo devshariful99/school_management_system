@@ -35,16 +35,17 @@ class AdminRequest extends FormRequest
         return [
             'email' => 'required|unique:admins,email',
             'password' => 'required|min:6|confirmed',
-            'image' => 'required|image|mimes:jpeg,png,gif,jpg,webp',
+            'image' => 'required',
         ];
     }
+
 
     protected function update(): array
     {
         return [
             'email' => 'required|unique:admins,email,' . $this->route('admin'),
             'password' => 'nullable|min:6|confirmed',
-            'image' => 'nullable|image|mimes:jpeg,png,gif,jpg,webp',
+            'image' => 'nullable',
         ];
     }
 }

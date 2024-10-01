@@ -10,6 +10,8 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Traits\FileManagementTrait;
+use App\Models\TempFile;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -96,8 +98,20 @@ class AdminController extends Controller
      */
     public function store(AdminRequest $req)
     {
+
         $admin = new Admin();
-        $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
+
+
+        $temp_file = TempFile::findOrFail($req->image);
+        if ($temp_file) {
+            $from_path = 'public/' . $temp_file->path . '/' . $temp_file->filename;
+            $to_path = 'admins/' . str_replace(' ', '-', admin()->name) . '/' . time() . '/' . $temp_file->filename;
+            Storage::move($from_path, 'public/' . $to_path);
+            $admin->image = $to_path;
+            Storage::deleteDirectory('public/' . $temp_file->path);
+            $temp_file->forceDelete();
+        }
+        // $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
         $admin->role_id = $req->role;
         $admin->name = $req->name;
         $admin->email = $req->email;

@@ -14,6 +14,7 @@ class FileManagementController extends Controller
     {
         $this->middleware('admin');
     }
+
     public function uploadTempFile(Request $request)
     {
         if ($request->hasFile($request->name)) {
