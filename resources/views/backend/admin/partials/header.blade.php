@@ -50,6 +50,18 @@
                                     </div>
                                 </div>
                             </li>
+                             <li>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)"
+                                    onclick="document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
+                                    class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
                         </div>
                     </ul>
                 </li>

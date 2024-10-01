@@ -38,7 +38,7 @@
     @stack('css_links')
     <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/kaiadmin.min.css') }}" />
     {{-- Custom CSS   --}}
-    <link rel="stylesheet" href="{{ asset('backend/admin/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/admin/css/custom.css') }}">
     @stack('css')
 
     <!-- Scripts -->
@@ -58,25 +58,6 @@
             @endif
         });
     </script>
-    <style>
-        .dt-container .dt-buttons {
-            display: inline-block;
-        }
-
-        .dt-container .dt-search {
-            float: right;
-        }
-
-        .dt-container .dt-info {
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .dt-container .dt-paging {
-            margin-top: 10px;
-            float: right;
-        }
-    </style>
 </head>
 
 <body>

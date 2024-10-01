@@ -110,6 +110,8 @@
                 });
             });
         }
-        file_upload(["#image"], "uploadImage", "admin");
+        $(document).ready(function() {
+            file_upload(["#image"], "uploadImage", "admin");
+        });
     </script>
 @endpush

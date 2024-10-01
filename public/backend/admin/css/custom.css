@@ -1,0 +1,17 @@
+.dt-container .dt-buttons {
+    display: inline-block;
+}
+
+.dt-container .dt-search {
+    float: right;
+}
+
+.dt-container .dt-info {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.dt-container .dt-paging {
+    margin-top: 10px;
+    float: right;
+}
