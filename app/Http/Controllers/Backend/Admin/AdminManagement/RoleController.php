@@ -7,9 +7,12 @@ use App\Http\Requests\Admin\RoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Traits\DetailsCommonDataTrait;
 
 class RoleController extends Controller
 {
+    use DetailsCommonDataTrait;
     public function __construct()
     {
         $this->middleware('admin');
@@ -23,10 +26,49 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['roles'] = Role::with(['permissions', 'created_admin'])->latest()->get();
-        return view('backend.admin.admin_management.role.index', $data);
+        $roles = Role::with(['permissions', 'created_admin'])->get();
+        if ($request->ajax()) {
+            $roles = $roles->sortBy('sort_order');
+            return DataTables::of($roles)
+                ->editColumn('created_at', function ($role) {
+                    return timeFormat($role->created_at);
+                })
+                ->editColumn('created_by', function ($role) {
+                    return creater_name($role->creater_admin);
+                })
+                ->editColumn('action', function ($role) {
+                    return view('backend.admin.includes.action_buttons', [
+                        'menuItems' => [
+                            [
+                                'routeName' => 'javascript:void(0)',
+                                'data-id' => $role->id,
+                                'className' => 'view',
+                                'label' => 'Details',
+                                'permissions' => ['role-list', 'role-delete']
+                            ],
+                            [
+                                'routeName' => 'am.role.edit',
+                                'params' => [$role->id],
+                                'label' => 'Edit',
+                                'permissions' => ['role-edit']
+                            ],
+
+                            [
+                                'routeName' => 'am.role.destroy',
+                                'params' => [$role->id],
+                                'label' => 'Delete',
+                                'delete' => true,
+                                'permissions' => ['role-delete']
+                            ]
+                        ],
+                    ]);
+                })
+                ->rawColumns(['created_at', 'created_by', 'action'])
+                ->make(true);
+        }
+        return view('backend.admin.admin_management.role.index', compact('roles'));
     }
 
     /**
@@ -61,13 +103,13 @@ class RoleController extends Controller
     // /**
     //  * Display the specified resource.
     //  */
-    // public function show(string $id)
-    // {
-    //     // $data = Role::with(['permissions', 'created_user', 'updated_user'])->findOrFail($id);
-    //     // $this->simpleColumnData($data);
-    //     // $data->permissionNames = $data->permissions->pluck('name')->implode(' | ');
-    //     // return response()->json($data);
-    // }
+    public function show(string $id)
+    {
+        $data = Role::with(['permissions', 'created_user', 'updated_user'])->findOrFail($id);
+        $this->AdminAuditColumnsData($data);
+        $data->permissions = $data->permissions->pluck('name')->implode(' | ');
+        return response()->json($data);
+    }
 
     /**
      * Show the form for editing the specified resource.

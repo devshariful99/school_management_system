@@ -25,11 +25,9 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index( Request $request)
+    public function index(Request $request)
     {
-        //  $data['permissions'] = Permission::with(['created_admin'])->orderBy('prefix')->get();
-
-          $permissions = Permission::with('created_admin')->get();
+        $permissions = Permission::with('created_admin')->get();
         if ($request->ajax()) {
             $permissions = $permissions->sortBy('sort_order');
             return DataTables::of($permissions)
@@ -47,21 +45,21 @@ class PermissionController extends Controller
                                 'data-id' => $permission->id,
                                 'className' => 'view',
                                 'label' => 'Details',
-                                'permissions'=>['permission-list','permission-delete']
+                                'permissions' => ['permission-list', 'permission-delete']
                             ],
                             [
                                 'routeName' => 'am.permission.edit',
                                 'params' => [$permission->id],
                                 'label' => 'Edit',
-                                'permissions'=>['permission-edit']
+                                'permissions' => ['permission-edit']
                             ],
-                            
+
                             [
                                 'routeName' => 'am.permission.destroy',
                                 'params' => [$permission->id],
                                 'label' => 'Delete',
                                 'delete' => true,
-                                'permissions'=>['permission-delete']
+                                'permissions' => ['permission-delete']
                             ]
                         ],
                     ]);

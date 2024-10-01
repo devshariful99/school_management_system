@@ -49,27 +49,27 @@ class AdminController extends Controller
                                 'data-id' => $admin->id,
                                 'className' => 'view',
                                 'label' => 'Details',
-                                'permissions'=>['admin-list','admin-delete','admin-status']
+                                'permissions' => ['admin-list', 'admin-delete', 'admin-status']
                             ],
                             [
                                 'routeName' => 'am.admin.status',
                                 'params' => [$admin->id],
                                 'label' => $admin->getStatusBtnTitle(),
-                                'permissions'=>['admin-status']
+                                'permissions' => ['admin-status']
                             ],
                             [
                                 'routeName' => 'am.admin.edit',
                                 'params' => [$admin->id],
                                 'label' => 'Edit',
-                                'permissions'=>['admin-edit']
+                                'permissions' => ['admin-edit']
                             ],
-                            
+
                             [
                                 'routeName' => 'am.admin.destroy',
                                 'params' => [$admin->id],
                                 'label' => 'Delete',
                                 'delete' => true,
-                                'permissions'=>['admin-delete']
+                                'permissions' => ['admin-delete']
                             ]
                         ],
                     ]);
@@ -84,7 +84,7 @@ class AdminController extends Controller
 
     // ('backend.admin.includes.action_buttons', [
     //     'menuItems' => [
-    //        
+    //
     //     ],
     // ])
 
@@ -94,7 +94,7 @@ class AdminController extends Controller
     public function create()
     {
         $data['roles'] = Role::latest()->get();
-        return view('backend.admin.admin_management.admin.create',$data);
+        return view('backend.admin.admin_management.admin.create', $data);
     }
 
     /**
@@ -128,6 +128,7 @@ class AdminController extends Controller
     {
         $data = Admin::with(['created_admin', 'updated_admin'])->findOrFail($id);
         $this->AdminAuditColumnsData($data);
+        $this->statusColumnData($data);
         return response()->json($data);
     }
 

@@ -64,8 +64,6 @@
             ];
             const details = {
                 table_columns: table_columns,
-                main_class: '.datatable',
-                displayLength: 10,
                 main_route: "{{ route('am.permission.index') }}",
                 order_route: "{{ route('update.sort.order') }}",
                 export_columns: [0, 1, 2, 3, 4],
