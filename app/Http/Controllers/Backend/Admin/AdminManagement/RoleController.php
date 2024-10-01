@@ -28,7 +28,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::with(['permissions', 'created_admin'])->get();
+        $roles = Role::with(['permissions', 'creater_admin'])->get();
         if ($request->ajax()) {
             $roles = $roles->sortBy('sort_order');
             return DataTables::of($roles)
@@ -105,9 +105,9 @@ class RoleController extends Controller
     //  */
     public function show(string $id)
     {
-        $data = Role::with(['permissions', 'created_user', 'updated_user'])->findOrFail($id);
+        $data = Role::with(['permissions', 'creater_admin', 'updater_admin'])->findOrFail($id);
         $this->AdminAuditColumnsData($data);
-        $data->permissions = $data->permissions->pluck('name')->implode(' | ');
+        $data->permission_names = $data->permissions->pluck('name')->implode(' | ');
         return response()->json($data);
     }
 

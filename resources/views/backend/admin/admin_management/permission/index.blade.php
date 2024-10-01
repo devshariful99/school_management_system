@@ -91,7 +91,7 @@
                     key: "name"
                 },
             ];
-            fetchAndShowModal(detailsUrl, headers, "modal_wrap_id", "modal_id");
+            fetchAndShowModal(detailsUrl, headers, "#modal_data", "myModal");
         });
     </script>
 @endpush

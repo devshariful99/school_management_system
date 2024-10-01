@@ -28,7 +28,7 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $admins = Admin::with(['created_admin'])->get();
+        $admins = Admin::with(['creater_admin'])->get();
         if ($request->ajax()) {
             $admins = $admins->sortBy('sort_order');
             return DataTables::of($admins)
@@ -126,7 +126,7 @@ class AdminController extends Controller
      */
     public function show(int $id)
     {
-        $data = Admin::with(['created_admin', 'updated_admin'])->findOrFail($id);
+        $data = Admin::with(['creater_admin', 'updater_admin'])->findOrFail($id);
         $this->AdminAuditColumnsData($data);
         $this->statusColumnData($data);
         return response()->json($data);

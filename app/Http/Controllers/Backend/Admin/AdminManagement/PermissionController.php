@@ -27,7 +27,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        $permissions = Permission::with('created_admin')->get();
+        $permissions = Permission::with('creater_admin')->get();
         if ($request->ajax()) {
             $permissions = $permissions->sortBy('sort_order');
             return DataTables::of($permissions)
@@ -98,7 +98,7 @@ class PermissionController extends Controller
      */
     public function show(int $id)
     {
-        $data = Permission::with(['created_admin', 'updated_admin'])->findOrFail($id);
+        $data = Permission::with(['creater_admin', 'updater_admin'])->findOrFail($id);
         $this->AdminAuditColumnsData($data);
         return response()->json($data);
     }

@@ -7,10 +7,10 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">Admin List</h4>
                     @include('backend.admin.includes.button', [
-                            'routeName' => 'am.admin.create',
-                            'label' => 'Add New',
-                            'permissions'=>['admin-create'],
-                        ])
+                        'routeName' => 'am.admin.create',
+                        'label' => 'Add New',
+                        'permissions' => ['admin-create'],
+                    ])
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped datatable">
@@ -26,52 +26,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($admins as $admin)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $admin->name }}</td>
-                                    <td>{{ $admin->email }}</td>
-                                    <td><span
-                                            class="{{ $admin->getStatusBadgeBg() }}">{{ $admin->getStatusBadgeTitle() }}</span>
-                                    </td>
-                                    <td>{{ timeFormat($admin->created_at) }}</td>
-                                    <td>{{ creater_name($admin->created_admin) }}</td>
-                                    
-                                    <td class="text-center">
-                                          @include('backend.admin.includes.action_buttons', [
-                                            'menuItems' => [
-                                                [
-                                                    'routeName' => 'javascript:void(0)',
-                                                    'data-id' => $admin->id,
-                                                    'className' => 'view',
-                                                    'label' => 'Details',
-                                                    'permissions'=>['admin-list','admin-delete','admin-status']
-                                                ],
-                                                [
-                                                    'routeName' => 'am.admin.status',
-                                                    'params' => [$admin->id],
-                                                    'label' => $admin->getStatusBtnTitle(),
-                                                    'permissions'=>['admin-status']
-                                                ],
-                                                [
-                                                    'routeName' => 'am.admin.edit',
-                                                    'params' => [$admin->id],
-                                                    'label' => 'Edit',
-                                                    'permissions'=>['admin-edit']
-                                                ],
-                                                
-                                                [
-                                                    'routeName' => 'am.admin.destroy',
-                                                    'params' => [$admin->id],
-                                                    'label' => 'Delete',
-                                                    'delete' => true,
-                                                    'permissions'=>['admin-delete']
-                                                ]
-                                            ],
-                                        ])
-                                    </td>
-                                </tr>
-                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -132,8 +86,7 @@
                     badgeClass: 'statusBadgeBg',
                 },
             ];
-            fetchAndShowModal(detailsUrl, headers, "modal_wrap_id", "modal_id");
+            fetchAndShowModal(detailsUrl, headers, "#modal_data", "myModal");
         });
     </script>
 @endpush
-
