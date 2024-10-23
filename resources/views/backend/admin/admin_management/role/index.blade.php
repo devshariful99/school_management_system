@@ -4,7 +4,6 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                @include('alerts.success')
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Role List') }}</h4>
                     @include('backend.admin.includes.button', [

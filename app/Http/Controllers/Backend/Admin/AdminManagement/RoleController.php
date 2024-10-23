@@ -116,6 +116,10 @@ class RoleController extends Controller
      */
     public function edit(int $id)
     {
+        if ($id == 1) {
+            session()->flash('error', 'Super Admin can not be deleted!');
+            return redirect()->route('am.role.index');
+        }
         $data['role'] = Role::with('permissions')->findOrFail($id);
         $data['permissions'] = Permission::orderBy('prefix')->get();
         $data['groupedPermissions'] = $data['permissions']->groupBy(function ($permission) {
@@ -142,6 +146,10 @@ class RoleController extends Controller
 
     public function destroy(string $id)
     {
+        if ($id == 1) {
+            session()->flash('error', 'Super Admin can not be deleted!');
+            return redirect()->route('am.role.index');
+        }
         $role = Role::findOrFail($id);
         $role->deleted_by = auth()->guard('admin')->user()->id;
         $role->save();

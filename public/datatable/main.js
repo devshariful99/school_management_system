@@ -25,9 +25,16 @@ function initializeDataTable({
                     extend: "pdfHtml5",
                     download: "open",
                     orientation: "portrait",
-                    pagesize: "A4",
+                    pageSize: "A4",
                     exportOptions: {
-                        columns: export_columns, // Modify as needed
+                        columns: export_columns,
+                    },
+                    customize: function (doc) {
+                        doc.defaultStyle = {
+                            font: "Roboto",
+                            fontSize: 10,
+                        };
+                        // doc.pageMargins = [30, 30, 30, 30];
                     },
                 },
                 {

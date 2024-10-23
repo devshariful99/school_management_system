@@ -170,7 +170,11 @@ class AdminController extends Controller
      */
     public function destroy(int $id)
     {
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::with('role')->findOrFail($id);
+        if ($admin->role_id == 1) {
+            session()->flash('error', 'Super Admin can not be deleted!');
+            return redirect()->route('am.admin.index');
+        }
         $admin->deleted_by = admin()->id;
         $admin->save();
         $admin->delete();
