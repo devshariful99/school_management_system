@@ -101,17 +101,9 @@ class AdminController extends Controller
 
         $admin = new Admin();
 
-
-        $temp_file = TempFile::findOrFail($req->image);
-        if ($temp_file) {
-            $from_path = 'public/' . $temp_file->path . '/' . $temp_file->filename;
-            $to_path = 'admins/' . str_replace(' ', '-', admin()->name) . '/' . time() . '/' . $temp_file->filename;
-            Storage::move($from_path, 'public/' . $to_path);
-            $admin->image = $to_path;
-            Storage::deleteDirectory('public/' . $temp_file->path);
-            $temp_file->forceDelete();
+        if (isset($req->image)) {
+            $this->handleFilepondFileUpload($admin, $req->image);
         }
-        // $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
         $admin->role_id = $req->role;
         $admin->name = $req->name;
         $admin->email = $req->email;
@@ -151,7 +143,10 @@ class AdminController extends Controller
     public function update(AdminRequest $req, int $id)
     {
         $admin = Admin::findOrFail($id);
-        $this->handleFileUpload($req, $admin, $admin->name, 'image', 'admins/');
+
+        if (isset($req->image)) {
+            $this->handleFilepondFileUpload($admin, $req->image, $admin->image);
+        }
         $admin->role_id = $req->role;
         $admin->name = $req->name;
         $admin->email = $req->email;

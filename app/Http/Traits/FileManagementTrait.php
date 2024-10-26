@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Models\TempFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,6 +37,22 @@ trait FileManagementTrait
     {
         if ($file) {
             Storage::disk('public')->delete($file);
+        }
+    }
+
+    public function handleFilepondFileUpload($model, $image, $old_image = false)
+    {
+        $temp_file = TempFile::findOrFail($image);
+        if ($temp_file) {
+            $from_path = 'public/' . $temp_file->path . '/' . $temp_file->filename;
+            $to_path = 'admins/' . str_replace(' ', '-', admin()->name) . '/' . time() . '/' . $temp_file->filename;
+            Storage::move($from_path, 'public/' . $to_path);
+            if ($old_image) {
+                $this->fileDelete($old_image);
+            }
+            $model->image = $to_path;
+            Storage::deleteDirectory('public/' . $temp_file->path);
+            $temp_file->forceDelete();
         }
     }
 }

@@ -6,11 +6,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Edit Admin') }}</h4>
-                     @include('backend.admin.includes.button', [
-                            'routeName' => 'am.admin.index',
-                            'label' => 'Back',
-                            'permissions'=>['admin-list','admin-delete','admin-status'],
-                        ])
+                    @include('backend.admin.includes.button', [
+                        'routeName' => 'am.admin.index',
+                        'label' => 'Back',
+                        'permissions' => ['admin-list', 'admin-delete', 'admin-status'],
+                    ])
                 </div>
                 <div class="card-body">
                     <form action="{{ route('am.admin.update', $admin->id) }}" method="POST" enctype="multipart/form-data">
@@ -25,21 +25,20 @@
                         <div class="form-group">
                             <label>{{ __('Role') }}</label>
                             <select name="role" class="form-control">
-                                <option value="" selected hidden>{{__('Select Role')}}</option>
+                                <option value="" selected hidden>{{ __('Select Role') }}</option>
                                 @foreach ($roles as $role)
-                                    <option value="{{$role->id}}" {{$admin->role_id == $role->id ? 'selected' : ''}}>{{$role->name}}</option>
+                                    <option value="{{ $role->id }}"
+                                        {{ $admin->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
                             @include('alerts.feedback', ['field' => 'role'])
                         </div>
                         <div class="form-group">
                             <label>{{ __('Image') }}</label>
-                            <input type="file" accept="image/*" name="image" class="form-control">
+                            <input type="file" accept="image/*" name="uploadImage" data-actualName="image"
+                                class="form-control filepond" id="image">
                             @include('alerts.feedback', ['field' => 'image'])
                         </div>
-                        @if ($admin->image)
-                            <img src="{{ asset('storage/' . $admin->image) }}" alt="" width="100" height="100">
-                        @endif
                         <div class="form-group">
                             <label>{{ __('Email') }}</label>
                             <input type="text" name="email" value="{{ $admin->email }}" class="form-control"
@@ -65,3 +64,16 @@
         </div>
     </div>
 @endsection
+@push('js')
+    {{-- FilePond  --}}
+    <script src="{{ asset('backend/admin/filepond/filepond.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            const existingFiles = [
+                "{{ $admin->image ? asset('storage/' . $admin->image) : '' }}",
+            ];
+            file_upload(["#image"], "uploadImage", "admin", existingFiles, false);
+        });
+    </script>
+    {{-- FilePond  --}}
+@endpush

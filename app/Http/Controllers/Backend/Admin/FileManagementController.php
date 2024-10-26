@@ -46,6 +46,44 @@ class FileManagementController extends Controller
             return response()->json(['message' => 'Revert success']);
         }
     }
+
+    // public function cleanupTempFiles(Request $request)
+    // {
+    //     $tempFiles = TempFile::where('created_at', '<', now()->subHours(1))->get();
+    //     // Delete files older than 1 hour (adjust as needed)
+    //     foreach ($tempFiles as $file) {
+    //         // Delete the file from storage
+    //         $filePath = storage_path("app/tmp/{$file->file_name}");
+    //         if (file_exists($filePath)) {
+    //             unlink($filePath); // Remove file
+    //             $file->delete(); // Remove entry from the database (if applicable)
+    //         }
+    //     }
+
+    //     return response()->json(['message' => 'Orphaned temporary files cleaned up']);
+    // }
+
+
+
+    public function deleteUnsavedTempFiles(Request $request)
+    {
+        $tempFileIds = $request->input('tempFileIds');
+        foreach ($tempFileIds as $fileId) {
+            $temp_file = TempFile::where('id', $fileId)->first();
+            if ($temp_file) {
+                Storage::deleteDirectory('public/' . $temp_file->path);
+                $temp_file->forceDelete();
+            } else {
+                return response()->json(['message' => 'Temporary files not found']);
+            }
+        }
+
+        return response()->json(['message' => 'Temporary files cleaned up successfully']);
+    }
+
+
+
+
     private function getCreator($creatorType)
     {
         switch ($creatorType) {

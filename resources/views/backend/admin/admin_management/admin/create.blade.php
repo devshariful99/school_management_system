@@ -62,56 +62,13 @@
         </div>
     </div>
 @endsection
-{{-- Filepond  --}}
 @push('js')
+    {{-- FilePond  --}}
+    <script src="{{ asset('backend/admin/filepond/filepond.js') }}"></script>
     <script>
-        function file_upload(selectors, name, creatorType, multipleFile = false) {
-            $.each(selectors.reverse(), function(index, selector) {
-                var actualName = $(selector).attr("data-actualName");
-
-                const inputElement = document.querySelector(selector);
-                const pond = FilePond.create(inputElement);
-                pond.setOptions({
-                    allowMultiple: multipleFile,
-                    server: {
-                        url: "/admin/file-management",
-                        process: {
-                            url: "/upload-temp-file",
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            },
-                            onload: (response_data) => {
-                                var f_selector = $('input[name="' + name + '"]');
-                                $(f_selector).attr("name", actualName);
-                                return response_data;
-                            },
-                            onerror: (response_data) => {
-                                console.log(response_data);
-                            },
-                            ondata: (formData) => {
-                                formData.append("name", name);
-                                formData.append("creatorType", creatorType);
-                                return formData;
-                            },
-                        },
-                        revert: {
-                            url: "/delete-temp-file",
-                            method: "DELETE",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                            },
-                            onerror: (response_data) => {
-                                console.log(response_data);
-                            },
-                        },
-                        fetch: null,
-                    },
-                });
-            });
-        }
         $(document).ready(function() {
-            file_upload(["#image"], "uploadImage", "admin");
+            file_upload(["#image"], "uploadImage", "admin", [], false);
         });
     </script>
+    {{-- FilePond  --}}
 @endpush
