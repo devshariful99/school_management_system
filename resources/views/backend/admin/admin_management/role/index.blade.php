@@ -6,11 +6,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Role List') }}</h4>
-                    @include('backend.admin.includes.button', [
+                    <x-backend.admin.button :datas="[
                         'routeName' => 'am.role.create',
                         'label' => 'Add New',
                         'permissions' => ['role-create'],
-                    ])
+                    ]" />
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped datatable">
@@ -31,7 +31,7 @@
         </div>
     </div>
     {{-- Admin Details Modal  --}}
-    @include('backend.admin.includes.details_modal', ['modal_title' => 'Role Details'])
+    <x-backend.admin.details-modal :datas="['modal_title' => 'Role Details']" />
 @endsection
 @push('js')
     {{-- Datatable Scripts --}}

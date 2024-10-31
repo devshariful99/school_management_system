@@ -35,11 +35,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Create Role') }}</h4>
-                    @include('backend.admin.includes.button', [
+                    <x-backend.admin.button :datas="[
                         'routeName' => 'am.role.index',
                         'label' => 'Back',
                         'permissions' => ['role-list', 'role-delete', 'role-status'],
-                    ])
+                    ]" />
                 </div>
                 <form method="POST" action="{{ route('am.role.store') }}">
                     @csrf
@@ -49,7 +49,7 @@
                             <input type="text" name="name"
                                 class="form-control  {{ $errors->has('name') ? ' is-invalid' : '' }}"
                                 placeholder="Enter role name" value="{{ old('name') }}">
-                            @include('alerts.feedback', ['field' => 'name'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'name']" />
                         </div>
 
                         <div class="card">

@@ -5,7 +5,6 @@
         <i class="icon-options-vertical"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-end">
-
         @foreach ($menuItems as $key => $menuItem)
             @php
 

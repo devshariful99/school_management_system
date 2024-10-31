@@ -39,31 +39,30 @@ class RoleController extends Controller
                     return creater_name($role->creater_admin);
                 })
                 ->editColumn('action', function ($role) {
-                    return view('backend.admin.includes.action_buttons', [
-                        'menuItems' => [
-                            [
-                                'routeName' => 'javascript:void(0)',
-                                'data-id' => $role->id,
-                                'className' => 'view',
-                                'label' => 'Details',
-                                'permissions' => ['role-list', 'role-delete']
-                            ],
-                            [
-                                'routeName' => 'am.role.edit',
-                                'params' => [$role->id],
-                                'label' => 'Edit',
-                                'permissions' => ['role-edit']
-                            ],
-
-                            [
-                                'routeName' => 'am.role.destroy',
-                                'params' => [$role->id],
-                                'label' => 'Delete',
-                                'delete' => true,
-                                'permissions' => ['role-delete']
-                            ]
+                    $menuItems = [
+                        [
+                            'routeName' => 'javascript:void(0)',
+                            'data-id' => $role->id,
+                            'className' => 'view',
+                            'label' => 'Details',
+                            'permissions' => ['role-list', 'role-delete']
                         ],
-                    ]);
+                        [
+                            'routeName' => 'am.role.edit',
+                            'params' => [$role->id],
+                            'label' => 'Edit',
+                            'permissions' => ['role-edit']
+                        ],
+
+                        [
+                            'routeName' => 'am.role.destroy',
+                            'params' => [$role->id],
+                            'label' => 'Delete',
+                            'delete' => true,
+                            'permissions' => ['role-delete']
+                        ]
+                    ];
+                    return view('components.backend.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_at', 'created_by', 'action'])
                 ->make(true);

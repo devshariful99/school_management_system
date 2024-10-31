@@ -9,11 +9,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">Admin List</h4>
-                    @include('backend.admin.includes.button', [
+                    <x-backend.admin.button :datas="[
                         'routeName' => 'am.admin.create',
                         'label' => 'Add New',
                         'permissions' => ['admin-create'],
-                    ])
+                    ]" />
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped datatable">
@@ -36,7 +36,7 @@
         </div>
     </div>
     {{-- Admin Details Modal  --}}
-    @include('backend.admin.includes.details_modal', ['modal_title' => 'Admin Details'])
+    <x-backend.admin.details-modal :datas="['modal_title' => 'Admin Details']" />
 @endsection
 @push('js')
     <script src="{{ asset('custom_litebox/litebox.js') }}"></script>

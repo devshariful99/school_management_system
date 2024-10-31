@@ -7,17 +7,16 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Permission List') }}</h4>
                     <div class="action_button">
-
-                        @include('backend.admin.includes.button', [
+                        <x-backend.admin.button :datas="[
                             'routeName' => 'permissions.export',
                             'label' => 'Export Permissions CSV',
                             'permissions' => ['permission-create'],
-                        ])
-                        @include('backend.admin.includes.button', [
+                        ]" />
+                        <x-backend.admin.button :datas="[
                             'routeName' => 'am.permission.create',
                             'label' => 'Add New',
                             'permissions' => ['permission-create'],
-                        ])
+                        ]" />
                     </div>
                 </div>
                 <div class="card-body">
@@ -47,7 +46,7 @@
         </div>
     </div>
     {{-- Admin Details Modal  --}}
-    @include('backend.admin.includes.details_modal', ['modal_title' => 'Permission Details'])
+    <x-backend.admin.details-modal :datas="['modal_title' => 'Permission Details']" />
 @endsection
 @push('js')
     {{-- Datatable Scripts --}}

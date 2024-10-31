@@ -38,31 +38,30 @@ class PermissionController extends Controller
                     return creater_name($permission->creater_admin);
                 })
                 ->editColumn('action', function ($permission) {
-                    return view('backend.admin.includes.action_buttons', [
-                        'menuItems' => [
-                            [
-                                'routeName' => 'javascript:void(0)',
-                                'data-id' => $permission->id,
-                                'className' => 'view',
-                                'label' => 'Details',
-                                'permissions' => ['permission-list', 'permission-delete']
-                            ],
-                            [
-                                'routeName' => 'am.permission.edit',
-                                'params' => [$permission->id],
-                                'label' => 'Edit',
-                                'permissions' => ['permission-edit']
-                            ],
-
-                            [
-                                'routeName' => 'am.permission.destroy',
-                                'params' => [$permission->id],
-                                'label' => 'Delete',
-                                'delete' => true,
-                                'permissions' => ['permission-delete']
-                            ]
+                    $menuItems = [
+                        [
+                            'routeName' => 'javascript:void(0)',
+                            'data-id' => $permission->id,
+                            'className' => 'view',
+                            'label' => 'Details',
+                            'permissions' => ['permission-list', 'permission-delete']
                         ],
-                    ]);
+                        [
+                            'routeName' => 'am.permission.edit',
+                            'params' => [$permission->id],
+                            'label' => 'Edit',
+                            'permissions' => ['permission-edit']
+                        ],
+
+                        [
+                            'routeName' => 'am.permission.destroy',
+                            'params' => [$permission->id],
+                            'label' => 'Delete',
+                            'delete' => true,
+                            'permissions' => ['permission-delete']
+                        ]
+                    ];
+                    return view('components.backend.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['created_at', 'created_by', 'action'])
                 ->make(true);
@@ -115,7 +114,7 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $id)
+    public function update(PermissionRequest $request, int $id)
     {
         $permission = Permission::findOrFail($id);
         $permission->name = $request->name;

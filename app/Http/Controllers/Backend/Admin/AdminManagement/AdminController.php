@@ -10,8 +10,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Traits\FileManagementTrait;
-use App\Models\TempFile;
-use Illuminate\Support\Facades\Storage;
+
 
 class AdminController extends Controller
 {
@@ -46,37 +45,37 @@ class AdminController extends Controller
                     return creater_name($admin->creater_admin);
                 })
                 ->editColumn('action', function ($admin) {
-                    return view('backend.admin.includes.action_buttons', [
-                        'menuItems' => [
-                            [
-                                'routeName' => 'javascript:void(0)',
-                                'data-id' => $admin->id,
-                                'className' => 'view',
-                                'label' => 'Details',
-                                'permissions' => ['admin-list', 'admin-delete', 'admin-status']
-                            ],
-                            [
-                                'routeName' => 'am.admin.status',
-                                'params' => [$admin->id],
-                                'label' => $admin->getStatusBtnTitle(),
-                                'permissions' => ['admin-status']
-                            ],
-                            [
-                                'routeName' => 'am.admin.edit',
-                                'params' => [$admin->id],
-                                'label' => 'Edit',
-                                'permissions' => ['admin-edit']
-                            ],
-
-                            [
-                                'routeName' => 'am.admin.destroy',
-                                'params' => [$admin->id],
-                                'label' => 'Delete',
-                                'delete' => true,
-                                'permissions' => ['admin-delete']
-                            ]
+                    $menuItems = [
+                        [
+                            'routeName' => 'javascript:void(0)',
+                            'data-id' => $admin->id,
+                            'className' => 'view',
+                            'label' => 'Details',
+                            'permissions' => ['admin-list', 'admin-delete', 'admin-status']
                         ],
-                    ]);
+                        [
+                            'routeName' => 'am.admin.status',
+                            'params' => [$admin->id],
+                            'label' => $admin->getStatusBtnTitle(),
+                            'permissions' => ['admin-status']
+                        ],
+                        [
+                            'routeName' => 'am.admin.edit',
+                            'params' => [$admin->id],
+                            'label' => 'Edit',
+                            'permissions' => ['admin-edit']
+                        ],
+
+                        [
+                            'routeName' => 'am.admin.destroy',
+                            'params' => [$admin->id],
+                            'label' => 'Delete',
+                            'delete' => true,
+                            'permissions' => ['admin-delete']
+                        ]
+
+                    ];
+                    return view('components.backend.admin.action-buttons', compact('menuItems'))->render();
                 })
                 ->rawColumns(['status', 'created_at', 'created_by', 'action'])
                 ->make(true);

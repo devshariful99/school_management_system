@@ -36,11 +36,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Edit Role') }}</h4>
-                    @include('backend.admin.includes.button', [
+                    <x-backend.admin.button :datas="[
                         'routeName' => 'am.role.index',
                         'label' => 'Back',
                         'permissions' => ['role-list', 'role-delete', 'role-status'],
-                    ])
+                    ]" />
                 </div>
                 <form method="POST" action="{{ route('am.role.update', $role->id) }}" autocomplete="off">
                     @method('PUT')
@@ -51,7 +51,7 @@
                             <input type="text" name="name"
                                 class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
                                 value="{{ $role->name }}">
-                            @include('alerts.feedback', ['field' => 'name'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'name']" />
                         </div>
                         <div class="row">
                             @foreach ($groupedPermissions->chunk(1) as $chunks)
