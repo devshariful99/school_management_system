@@ -133,7 +133,6 @@ class PermissionController extends Controller
     {
         $permission = Permission::findOrFail($id);
         $permission->deleted_by = auth()->guard('admin')->user()->id;
-        $permission->save();
         $permission->delete();
         session()->flash('success', "$permission->name permission deleted successfully");
         return redirect()->route('am.permission.index');

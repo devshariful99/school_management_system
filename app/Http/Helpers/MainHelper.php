@@ -93,3 +93,8 @@ function auth_storage_url($url, $gender = false)
     }
     return $url ? asset('storage/' . $url) : $image;
 }
+function getSubmitterType($className)
+{
+    $className = basename(str_replace('\\', '/', $className));
+    return trim(preg_replace('/(?<!\ )[A-Z]/', ' $0', $className));
+}

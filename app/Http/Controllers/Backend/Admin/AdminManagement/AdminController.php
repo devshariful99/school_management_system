@@ -41,6 +41,9 @@ class AdminController extends Controller
                 ->editColumn('created_at', function ($admin) {
                     return timeFormat($admin->created_at);
                 })
+                ->editColumn('role_id', function ($admin) {
+                    return $admin->role->name;
+                })
                 ->editColumn('created_by', function ($admin) {
                     return creater_name($admin->creater_admin);
                 })
@@ -170,7 +173,6 @@ class AdminController extends Controller
             return redirect()->route('am.admin.index');
         }
         $admin->deleted_by = admin()->id;
-        $admin->save();
         $admin->delete();
         session()->flash('success', 'Admin deleted successfully!');
         return redirect()->route('am.admin.index');

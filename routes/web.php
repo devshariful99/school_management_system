@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Admin\DashboardController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\AdminController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
+use App\Http\Controllers\Backend\Admin\AuditController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
 use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
 use Illuminate\Support\Facades\Response;
@@ -58,5 +59,11 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('role/status/{role}', [RoleController::class, 'status'])->name('role.status');
         Route::resource('permission', PermissionController::class);
         Route::get('permission/status/{permission}', [PermissionController::class, 'status'])->name('permission.status');
+    });
+
+    // Audit Management
+    Route::controller(AuditController::class)->prefix('audits')->name('audit.')->group(function () {
+        Route::get('audits', 'index')->name('index');
+        Route::get('audits/details/{id}', 'details')->name('details');
     });
 });

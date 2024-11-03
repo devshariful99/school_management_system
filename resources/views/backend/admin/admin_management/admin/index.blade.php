@@ -21,6 +21,7 @@
                             <tr>
                                 <th>{{ __('SL') }}</th>
                                 <th>{{ __('Name') }}</th>
+                                <th>{{ __('Role') }}</th>
                                 <th>{{ __('Email') }}</th>
                                 <th>{{ __('Status') }}</th>
                                 <th>{{ __('Created Date') }}</th>
@@ -47,6 +48,7 @@
             let table_columns = [
                 //name and data, orderable, searchable
                 ['name', true, true],
+                ['role_id', true, true],
                 ['email', true, true],
                 ['status', true, true],
                 ['created_at', false, false],

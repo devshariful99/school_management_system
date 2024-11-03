@@ -151,7 +151,6 @@ class RoleController extends Controller
         }
         $role = Role::findOrFail($id);
         $role->deleted_by = auth()->guard('admin')->user()->id;
-        $role->save();
         $role->delete();
         session()->flash('success', 'Role deleted successfully!');
         return redirect()->route('am.role.index');

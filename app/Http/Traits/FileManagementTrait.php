@@ -48,7 +48,13 @@ trait FileManagementTrait
             $to_path = 'admins/' . str_replace(' ', '-', admin()->name) . '/' . time() . '/' . $temp_file->filename;
             Storage::move($from_path, 'public/' . $to_path);
             if ($old_image) {
-                $this->fileDelete($old_image);
+                // $this->fileDelete($old_image);
+                $temp_create = new TempFile();
+                $temp_create->path =  dirname($old_image);
+                $temp_create->filename = basename($old_image);
+                $temp_create->from()->associate($model);
+                $temp_create->creater()->associate(admin());
+                $temp_create->save();
             }
             $model->image = $to_path;
             Storage::deleteDirectory('public/' . $temp_file->path);
