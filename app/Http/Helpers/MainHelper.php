@@ -85,11 +85,11 @@ function storage_url($urlOrArray)
 
 function auth_storage_url($url, $gender = false)
 {
-    $image = asset('default_img/other.png');
+    $image = asset('default_img/other-1.png');
     if ($gender == 1) {
-        $image = asset('default_img/male.png');
+        $image = asset('default_img/male-1.jpeg');
     } elseif ($gender == 2) {
-        $image = asset('default_img/female.png');
+        $image = asset('default_img/female-1.jpg');
     }
     return $url ? asset('storage/' . $url) : $image;
 }
