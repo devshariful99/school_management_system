@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label>{{ __('Image') }}</label>
-                            <input type="file" name="uploadImage" data-actualName="image" class="form-control filepond"
+                            <input type="file" name="uploadImage1_" data-actualName="image" class="form-control filepond"
                                 id="image" accept="image/*">
                             <x-feedback-alert :datas="['errors' => $errors, 'field' => 'image']" />
                         </div>

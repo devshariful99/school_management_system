@@ -63,6 +63,12 @@
                         <p>{{ __('Audits') }}</p>
                     </a>
                 </li>
+                <li class="nav-item  @if ($page_slug == 'site_setting') active @endif">
+                    <a href="{{ route('site_setting.index') }}">
+                        <i class="fas fa-home"></i>
+                        <p>{{ __('Site Settings') }}</p>
+                    </a>
+                </li>
 
 
 

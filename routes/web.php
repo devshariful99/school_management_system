@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AuditController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
 use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
+use App\Http\Controllers\Backend\SiteSettingController;
 use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
@@ -65,5 +66,11 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::controller(AuditController::class)->prefix('audits')->name('audit.')->group(function () {
         Route::get('audits', 'index')->name('index');
         Route::get('audits/details/{id}', 'details')->name('details');
+    });
+
+    // Site Settings
+    Route::controller(SiteSettingController::class)->prefix('site-settings')->name('site_setting.')->group(function () {
+        Route::get('index', 'index')->name('index');
+        Route::post('update', 'update')->name('update');
     });
 });

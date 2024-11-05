@@ -41,7 +41,9 @@ function file_upload(
                         ),
                     },
                     onload: (response_data) => {
-                        var f_selector = $('input[name="' + name + '"]');
+                        var f_selector = $(
+                            'input[name="' + name + (index + 1) + '"]'
+                        );
                         $(f_selector).attr("name", actualName);
 
                         tempFileIds =
@@ -59,7 +61,7 @@ function file_upload(
                         console.log(response_data);
                     },
                     ondata: (formData) => {
-                        formData.append("name", name);
+                        formData.append("name", name + (index + 1));
                         formData.append("creatorType", creatorType);
                         return formData;
                     },
