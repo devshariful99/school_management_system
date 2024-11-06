@@ -42,8 +42,9 @@ class FileManagementController extends Controller
         $temp_file = TempFile::findOrFail(request()->getContent());
         if ($temp_file) {
             Storage::deleteDirectory('public/' . $temp_file->path);
+            $id = $temp_file->id;
             $temp_file->forceDelete();
-            return response()->json(['message' => 'Revert success']);
+            return response()->json(['message' => 'Revert success', 'id' => $id]);
         }
     }
 

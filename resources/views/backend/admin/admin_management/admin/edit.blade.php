@@ -69,9 +69,9 @@
     <script src="{{ asset('backend/admin/filepond/filepond.js') }}"></script>
     <script>
         $(document).ready(function() {
-            const existingFiles = [
-                "{{ $admin->image ? asset('storage/' . $admin->image) : '' }}",
-            ];
+            const existingFiles = {
+                "#image": "{{ $admin->image ? asset('storage/' . $admin->image) : '' }}",
+            };
             file_upload(["#image"], "uploadImage", "admin", existingFiles, false);
         });
     </script>

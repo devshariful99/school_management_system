@@ -51,39 +51,17 @@ class SiteSettingController extends Controller
                             $temp_create->creater()->associate(admin());
                             $temp_create->save();
                         }
-                        $siteSetting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $to_path]);
+                        $site_setting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $to_path]);
                         Storage::deleteDirectory('public/' . $temp_file->path);
                         $temp_file->forceDelete();
                         continue;
                     }
                 }
-                // if ($key == 'site_favicon') {
-                //     $temp_file = TempFile::findOrFail($request->site_favicon);
-                //     if ($temp_file) {
-                //         $from_path = 'public/' . $temp_file->path . '/' . $temp_file->filename;
-                //         $to_path = 'site-settings/site-favicon/' . time() . '/' . $temp_file->filename;
-                //         Storage::move($from_path, 'public/' . $to_path);
-                //         $old_image = SiteSetting::where('key', 'site_favicon')->first();
-                //         if ($old_image) {
-                //             $temp_create = new TempFile();
-                //             $temp_create->path =  dirname($old_image->value);
-                //             $temp_create->filename = basename($old_image->value);
-                //             $temp_create->from()->associate($old_image);
-                //             $temp_create->creater()->associate(admin());
-                //             $temp_create->save();
-                //         }
-                //         $siteSetting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $to_path]);
-                //         Storage::deleteDirectory('public/' . $temp_file->path);
-                //         $temp_file->forceDelete();
-                //         continue;
-                //     }
-                // }
-
-                $siteSetting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+                $site_setting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
 
 
-                if (!empty($siteSetting->env_key)) {
-                    $env = $this->set($siteSetting->env_key, '"' . $value . '"', $env);
+                if (!empty($site_setting->env_key)) {
+                    $env = $this->set($site_setting->env_key, '"' . html_entity_decode($value) . '"', $env);
                 }
             }
 
@@ -97,6 +75,19 @@ class SiteSettingController extends Controller
             return redirect()->route('site_setting.index');
         }
     }
+
+    private function set($key, $value, $env)
+    {
+        foreach ($env as $env_key => $env_value) {
+            $entry = explode("=", $env_value, 2);
+            if ($entry[0] == $key) {
+                $env[$env_key] = $key . "=" . $value . "\n";
+            } else {
+                $env[$env_key] = $env_value;
+            }
+        }
+        return $env;
+    }
     // public function sms_store(SmsSettingUpdateRequest $request): RedirectResponse
     // {
     //     $data = $request->except('_token');
@@ -105,9 +96,9 @@ class SiteSettingController extends Controller
     //         $envPath = base_path('.env');
     //         $env = file($envPath);
     //         foreach ($data as $key => $value) {
-    //             $siteSetting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
-    //             if (!empty($siteSetting->env_key)) {
-    //                 $env = $this->set($siteSetting->env_key, '"' . $value . '"', $env);
+    //             $site_setting = SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+    //             if (!empty($site_setting->env_key)) {
+    //                 $env = $this->set($site_setting->env_key, '"' . $value . '"', $env);
     //             }
     //         }
 

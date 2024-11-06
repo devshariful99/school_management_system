@@ -41,7 +41,7 @@
 
                     <div class="form-group{{ $errors->has('site_logo') ? ' has-danger' : '' }}">
                         <label>{{ __('Site Logo') }}</label>
-                        <input type="file" id="site_logo" name="uploadImage1_" data-actualName="site_logo"
+                        <input type="file" id="site_logo" name="uploadImage" data-actualName="site_logo"
                             class="form-control {{ $errors->has('site_logo') ? ' is-invalid' : '' }} image-upload"
                             @if (isset($general_settings['site_logo'])) data-existing-files="{{ storage_url($general_settings['site_logo']) }}" data-delete-url="" @endif
                             accept="image/*">
@@ -51,7 +51,7 @@
                     <div class="form-group{{ $errors->has('site_favicon') ? ' has-danger' : '' }}">
                         <label>{{ __('Site Favicon 16*16') }}</label>
 
-                        <input type="file" id="site_favicon" name="uploadImage2_" data-actualName="site_favicon"
+                        <input type="file" id="site_favicon" name="uploadImage" data-actualName="site_favicon"
                             class="form-control {{ $errors->has('site_favicon') ? ' is-invalid' : '' }} image-upload"
                             @if (isset($general_settings['site_favicon'])) data-existing-files="{{ storage_url($general_settings['site_favicon']) }}" data-delete-url="{{ storage_url($general_settings['site_favicon']) }}" @endif
                             accept="image/*">
@@ -149,10 +149,10 @@
     <script src="{{ asset('backend/admin/filepond/filepond.js') }}"></script>
     <script>
         $(document).ready(function() {
-            const existingFiles = [
-                "{{ isset($general_settings['site_logo']) ? asset('storage/' . $general_settings['site_logo']) : '' }}",
-                "{{ isset($general_settings['site_favicon']) ? asset('storage/' . $general_settings['site_favicon']) : '' }}",
-            ];
+            const existingFiles = {
+                "#site_logo": "{{ isset($general_settings['site_logo']) ? asset('storage/' . $general_settings['site_logo']) : '' }}",
+                "#site_favicon": "{{ isset($general_settings['site_favicon']) ? asset('storage/' . $general_settings['site_favicon']) : '' }}",
+            };
             file_upload(["#site_logo", "#site_favicon"], "uploadImage", "admin", existingFiles, false);
         });
     </script>

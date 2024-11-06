@@ -11,16 +11,30 @@ function file_upload(
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ["image/*"],
         });
+        const fileUrl = existingFiles[selector];
+        console.log("existingFiles for selector:", selector, fileUrl);
         pond.setOptions({
             allowMultiple: multipleFile,
-            files: existingFiles
-                .filter((fileUrl) => fileUrl) // Filter out empty URLs
-                .map((fileUrl) => ({
-                    source: fileUrl,
-                    options: {
-                        type: "local", // Marks the file as already uploaded
-                    },
-                })),
+            files: fileUrl
+                ? [
+                      {
+                          source: fileUrl,
+                          options: {
+                              type: "local",
+                              metadata: {
+                                  fileId: "1",
+                              },
+                          },
+                      },
+                  ]
+                : [],
+            onaddfile: (fileItem) => {
+                console.log("File added to FilePond:", fileItem);
+            },
+            onremovefile: (fileItem) => {
+                console.log("Files currently in pond:", pond.getFiles());
+                console.log(fileItem);
+            },
             server: {
                 url: "/admin/file-management",
                 load: (source, load, error) => {
@@ -41,27 +55,28 @@ function file_upload(
                         ),
                     },
                     onload: (response_data) => {
-                        var f_selector = $(
-                            'input[name="' + name + (index + 1) + '"]'
-                        );
+                        var f_selector = $('input[name="' + name + '"]');
                         $(f_selector).attr("name", actualName);
 
                         tempFileIds =
                             JSON.parse(sessionStorage.getItem("tempFileIds")) ||
                             [];
-                        tempFileIds.push(response_data.split("<")[0]);
-                        sessionStorage.setItem(
-                            "tempFileIds",
-                            JSON.stringify(tempFileIds)
-                        );
-
+                        const newFileId = response_data.split("<")[0];
+                        f_selector.val(newFileId);
+                        if (!tempFileIds.includes(newFileId)) {
+                            tempFileIds.push(newFileId);
+                            sessionStorage.setItem(
+                                "tempFileIds",
+                                JSON.stringify(tempFileIds)
+                            );
+                        }
                         return response_data;
                     },
                     onerror: (response_data) => {
                         console.log(response_data);
                     },
                     ondata: (formData) => {
-                        formData.append("name", name + (index + 1));
+                        formData.append("name", name);
                         formData.append("creatorType", creatorType);
                         return formData;
                     },
@@ -75,8 +90,18 @@ function file_upload(
                         ),
                     },
                     onload: (response_data) => {
-                        sessionStorage.removeItem("pageReload");
-                        sessionStorage.removeItem("tempFileIds");
+                        response_data = JSON.parse(response_data);
+                        tempFileIds =
+                            JSON.parse(sessionStorage.getItem("tempFileIds")) ||
+                            [];
+
+                        tempFileIds = tempFileIds.filter(
+                            (id) => id != response_data.id
+                        );
+                        sessionStorage.setItem(
+                            "tempFileIds",
+                            JSON.stringify(tempFileIds)
+                        );
                     },
                     onerror: (response_data) => {
                         console.log(response_data);
