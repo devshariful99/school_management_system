@@ -5,6 +5,7 @@ function file_upload(
     existingFiles = [],
     multipleFile = false
 ) {
+    const uploadedFiles = {};
     $.each(selectors.reverse(), function (index, selector) {
         var actualName = $(selector).attr("data-actualName");
         const inputElement = document.querySelector(selector);
@@ -28,13 +29,28 @@ function file_upload(
                       },
                   ]
                 : [],
-            onaddfile: (fileItem) => {
-                console.log("File added to FilePond:", fileItem);
-            },
-            onremovefile: (fileItem) => {
-                console.log("Files currently in pond:", pond.getFiles());
-                console.log(fileItem);
-            },
+            // onaddfile: (error, fileItem) => {
+            //     if (error) {
+            //         console.error("Error adding file:", error);
+            //         return;
+            //     }
+
+            //     // Store file metadata in the uploadedFiles object
+            //     const fileId = fileItem.getMetadata("fileId");
+            //     uploadedFiles[fileItem.id] = fileId;
+
+            //     console.log("File added to FilePond:", fileItem);
+            // },
+            // onremovefile: (error, fileItem) => {
+            //     if (error) {
+            //         console.error("Error removing file:", error);
+            //         return;
+            //     }
+
+            //     // Retrieve the fileId from the uploadedFiles object
+            //     const fileId = uploadedFiles[fileItem.id];
+            //     console.log("File removed from FilePond:", fileId);
+            // },
             server: {
                 url: "/admin/file-management",
                 load: (source, load, error) => {
