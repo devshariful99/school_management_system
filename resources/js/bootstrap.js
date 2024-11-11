@@ -9,6 +9,10 @@ window.showModal = function (modal_id) {
     var myModal = new bootstrap.Modal(document.getElementById(modal_id));
     myModal.show();
 };
+window.hideModal = function (modal_id) {
+    var myModal = new bootstrap.Modal(document.getElementById(modal_id));
+    myModal.hide();
+};
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

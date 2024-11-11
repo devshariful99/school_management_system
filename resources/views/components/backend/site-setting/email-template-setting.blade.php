@@ -1,4 +1,4 @@
-{{-- <div class="row">
+<div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -22,7 +22,7 @@
                                 <td> {{ $et->subject }} </td>
                                 <td>
                                     <a class="btn btn-info btn-sm text-white edit_et" href="javascript:void(0)"
-                                        data-id="{{ $et->id }}"><i class="fa-solid fa-pen"></i></a>
+                                        data-id="{{ $et->id }}"><i class="fas fa-pen"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Template Edit Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -74,8 +74,10 @@
                                 <textarea name="template" id="template" class="form-control"></textarea>
                                 <x-feedback-alert :datas="['errors' => $errors, 'field' => 'template']" />
                             </div>
-                            <span type="submit" id="updateEmailTemplate"
-                                class="btn btn-primary btn-sm">{{ __('Update') }}</span>
+                            <div class="form-group">
+                                <span type="submit" id="updateEmailTemplate"
+                                    class="btn btn-primary float-end">{{ __('Update') }}</span>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -85,81 +87,9 @@
 </div>
 @push('js')
     <script>
-        // Edit
-        $(document).ready(function() {
-            $('.edit_et').on('click', function() {
-                let id = $(this).data('id');
-                let _url = ("{{ route('settings.email_templates.site_settings', ['id']) }}");
-                let __url = _url.replace('id', id);
-                $.ajax({
-                    url: __url,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var result = '';
-                        var variables = JSON.parse(data.email_template.variables);
-
-                        variables.forEach(function(variable) {
-                            result += `
-                                <tr>
-                                    <td>{${variable.key}}</td>
-                                    <td>{${variable.meaning}}</td>
-                                </tr>
-                            `;
-                        });
-                        $('.variables').html(result);
-
-
-
-                        $('#updateEmailTemplate').attr('data-id', data.email_template.id)
-                        $('#subject').val(data.email_template.subject)
-                        $('#template').val(data.email_template.template)
-                        $('#exampleModal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching member data:', error);
-                    }
-                });
-            });
-        });
-
-        // Update
-        $(document).ready(function() {
-            $('#updateEmailTemplate').click(function() {
-                var form = $('#emailTemplateForm');
-                let id = $(this).data('id');
-                let _url = ("{{ route('settings.email_templates.site_settings', ['id']) }}");
-                let __url = _url.replace('id', id);
-                $.ajax({
-                    type: 'PUT',
-                    url: __url,
-                    data: form.serialize(),
-                    success: function(response) {
-                        $('#exampleModal').modal('hide');
-                        console.log(response.message);
-                        window.location.reload();
-                    },
-                    error: function(xhr) {
-                        if (xhr.status === 422) {
-                            // Handle validation errors
-                            var errors = xhr.responseJSON.errors;
-                            $.each(errors, function(field, messages) {
-                                // Display validation errors
-                                var errorHtml = '';
-                                $.each(messages, function(index, message) {
-                                    errorHtml +=
-                                        '<span class="invalid-feedback d-block" role="alert">' +
-                                        message + '</span>';
-                                });
-                                $('[name="' + field + '"]').after(errorHtml);
-                            });
-                        } else {
-                            // Handle other errors
-                            console.log('An error occurred.');
-                        }
-                    }
-                });
-            });
-        });
+        let details = {
+            edit_url: "{{ route('site_setting.email_template', ['id']) }}",
+        }
     </script>
-@endpush --}}
+    <script src="{{ asset('backend/admin/js/email_template.js') }}"></script>
+@endpush

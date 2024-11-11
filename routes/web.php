@@ -72,5 +72,8 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::controller(SiteSettingController::class)->prefix('site-settings')->name('site_setting.')->group(function () {
         Route::get('index', 'index')->name('index');
         Route::post('update', 'update')->name('update');
+        Route::get('email-template/edit/{id}', 'et_edit')->name('email_template');
+        Route::put('email-template/edit/{id}', 'et_update')->name('email_template');
+        Route::post('notification/update', 'notification')->name('notification');
     });
 });

@@ -8,44 +8,43 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
-
                     <div class="form-group">
                         <label>{{ _('API Url') }}</label>
-                        <input type="text" name="api_url"
-                            class="form-control{{ $errors->has('api_url') ? ' is-invalid' : '' }}"
-                            placeholder="{{ _('Enter sms api url') }}" value="{{ $sms_settings['api_url'] ?? '' }}">
-                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'api_url']" />
+                        <input type="text" name="sms_api_url"
+                            class="form-control{{ $errors->has('sms_api_url') ? ' is-invalid' : '' }}"
+                            placeholder="{{ _('Enter sms api url') }}" value="{{ $sms_settings['sms_api_url'] ?? '' }}">
+                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'sms_api_url']" />
                     </div>
                     <div class="form-group">
                         <label>{{ _('API Key') }}</label>
-                        <input type="text" name="api_key"
-                            class="form-control{{ $errors->has('api_key') ? ' is-invalid' : '' }}"
-                            placeholder="{{ _('Enter sms api key') }}" value="{{ $sms_settings['api_key'] ?? '' }}">
-                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'api_key']" />
+                        <input type="text" name="sms_api_key"
+                            class="form-control{{ $errors->has('sms_api_key') ? ' is-invalid' : '' }}"
+                            placeholder="{{ _('Enter sms api key') }}" value="{{ $sms_settings['sms_api_key'] ?? '' }}">
+                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'sms_api_key']" />
                     </div>
                     <div class="form-group">
                         <label>{{ _('API Secret') }}</label>
-                        <input type="text" name="api_secret"
-                            class="form-control{{ $errors->has('api_secret') ? ' is-invalid' : '' }}"
+                        <input type="text" name="sms_api_secret"
+                            class="form-control{{ $errors->has('sms_api_secret') ? ' is-invalid' : '' }}"
                             placeholder="{{ _('Enter sms api secret') }}"
-                            value="{{ $sms_settings['api_secret'] ?? '' }}">
-                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'api_secret']" />
+                            value="{{ $sms_settings['sms_api_secret'] ?? '' }}">
+                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'sms_api_secret']" />
                     </div>
                     <div class="form-group">
                         <label>{{ _('API Sender Id') }}</label>
-                        <input type="text" name="api_sender_id"
-                            class="form-control{{ $errors->has('api_sender_id') ? ' is-invalid' : '' }}"
+                        <input type="text" name="sms_api_sender_id"
+                            class="form-control{{ $errors->has('sms_api_sender_id') ? ' is-invalid' : '' }}"
                             placeholder="{{ _('Enter sms api sender id') }}"
-                            value="{{ $sms_settings['api_sender_id'] ?? '' }}">
-                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'api_sender_id']" />
+                            value="{{ $sms_settings['sms_api_sender_id'] ?? '' }}">
+                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'sms_api_sender_id']" />
                     </div>
                     <div class="form-group">
                         <label>{{ _('API status code') }}</label>
-                        <input type="text" name="api_status_code"
-                            class="form-control{{ $errors->has('api_status_code') ? ' is-invalid' : '' }}"
+                        <input type="text" name="sms_api_status_code"
+                            class="form-control{{ $errors->has('sms_api_status_code') ? ' is-invalid' : '' }}"
                             placeholder="{{ _('Enter sms api secret') }}"
-                            value="{{ $sms_settings['api_status_code'] ?? '' }}">
-                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'api_status_code']" />
+                            value="{{ $sms_settings['sms_api_status_code'] ?? '' }}">
+                        <x-feedback-alert :datas="['errors' => $errors, 'field' => 'sms_api_status_code']" />
                     </div>
                 </div>
                 <div class="card-footer text-end">

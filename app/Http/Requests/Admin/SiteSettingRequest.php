@@ -33,6 +33,11 @@ class SiteSettingRequest extends FormRequest
             'audit' => 'required|sometimes|boolean',
             'date_format' => 'required|sometimes|string',
             'time_format' => 'required|sometimes|string',
+            'sms_api_url' => 'required|sometimes|url',
+            'sms_api_key' => 'required|sometimes',
+            'sms_api_secret' => 'nullable',
+            'sms_api_status_code' => 'required|sometimes',
+            'sms_api_sender_id' => 'required|sometimes',
 
         ];
     }
