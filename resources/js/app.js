@@ -4,3 +4,4 @@ import "./datatable";
 import "./sweetalert";
 import "./toastr";
 import "./filepond";
+import "./select2";
