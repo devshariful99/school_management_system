@@ -1,3 +1,10 @@
+@push('css')
+    <style>
+        .ck.ck-toolbar-dropdown>.ck-dropdown__panel {
+            max-width: 35vw !important;
+        }
+    </style>
+@endpush
 <div class="row">
     <div class="col-md-12">
         <div class="card">
