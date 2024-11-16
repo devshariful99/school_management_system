@@ -57,7 +57,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item  @if ($page_slug == 'audit') active @endif">
+                <li class="nav-item  @if ($page_slug == 'audits') active @endif">
                     <a href="{{ route('audit.index') }}">
                         <i class="fas fa-home"></i>
                         <p>{{ __('Audits') }}</p>

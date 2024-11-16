@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use OwenIt\Auditing\Models\Audit;
+use App\Models\Audit;
 use Yajra\DataTables\Facades\DataTables;
 
 class AuditController extends Controller

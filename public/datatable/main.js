@@ -61,8 +61,13 @@ function initializeDataTable({
                     name: "serial", // A unique name for the serial column
                     orderable: false, // You probably don’t want to allow sorting by this column
                     searchable: false, // No search on serial number
+                    // render: function (data, type, row, meta) {
+                    //     return meta.row + 1; // meta.row gives the row index (0-based), so add 1
+                    // },
                     render: function (data, type, row, meta) {
-                        return meta.row + 1; // meta.row gives the row index (0-based), so add 1
+                        // Calculate serial number based on page and page length
+                        const pageInfo = $(main_class).DataTable().page.info(); // Get current page info
+                        return pageInfo.start + meta.row + 1; // Adjust serial number
                     },
                 },
                 // Map the rest of the columns from `table_columns`
@@ -107,7 +112,7 @@ function initializeDataTable({
                         } else {
                             handleErrors(response);
                         }
-                        table.ajax.reload(); // Reload the table to reflect changes
+                        // table.ajax.reload(); // Reload the table to reflect changes
                     },
                     error: function (error) {
                         toastr.error("Something went wrong. Please try again.");
