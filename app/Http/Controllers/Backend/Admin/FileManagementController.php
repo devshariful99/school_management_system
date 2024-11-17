@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContentImage;
 use App\Models\TempFile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -93,5 +94,33 @@ class FileManagementController extends Controller
             case 'admin':
                 return admin();
         }
+    }
+
+
+    public function content_image_upload(Request $request)
+    {
+        $request->validate([
+            'upload' => 'required|image|mimes:jpeg,png,jpg,gif',
+        ]);
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = $file->getClientOriginalName();
+            $folder = uniqid();
+            $file->storeAs('content_image/' . $folder, $filename, 'public');
+            $path = "content_image/" . $folder;
+
+            $save = new ContentImage();
+            $save->path = $path;
+            $save->filename = $filename;
+            $save->created_at = Carbon::now()->toDateTimeString();
+            $save->creater()->associate(admin());
+            $save->save();
+            return response()->json([
+                'success' => 'File upload successfully',
+                'url' => asset('storage/' . $path . '/' . $filename),
+                'data_id' => $save->id,
+            ]);
+        }
+        return response()->json(['error' => 'File upload failed'], 400);
     }
 }

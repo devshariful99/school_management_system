@@ -3,6 +3,8 @@ $(document).ready(function () {
         let id = $(this).data("id");
         let _url = details.edit_url;
         let __url = _url.replace("id", id);
+        destroyAllEditors();
+        let textAreas = $("#emailTemplateForm").find("textarea");
         $.ajax({
             url: __url,
             method: "GET",
@@ -27,6 +29,7 @@ $(document).ready(function () {
                 );
                 $("#subject").val(data.email_template.subject);
                 $("#template").val(data.email_template.template);
+                initializeCKEditor(textAreas);
                 showModal("exampleModal");
             },
             error: function (xhr, status, error) {

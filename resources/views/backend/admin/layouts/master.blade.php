@@ -31,6 +31,7 @@
                 sessionStorage.fonts = true;
             },
         });
+        const content_image_upload_url = "{{ route('file.ci_upload') }}";
     </script>
     <link
         href="https://cdn.datatables.net/v/dt/jq-3.7.0/jszip-3.10.1/dt-2.1.7/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/cr-2.0.4/fc-5.0.1/r-3.0.3/rr-1.5.0/datatables.min.css"

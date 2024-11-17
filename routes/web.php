@@ -51,6 +51,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/reset-file-file', 'resetTempFile')->name('reset_tf');
         // Route::post('/cleanup-temp-files', 'cleanupTempFiles')->name('cleanup_tf');
         Route::post('/delete-unsaved-temp-files', 'deleteUnsavedTempFiles')->name('du_tf');
+        Route::post('/content-image/upload', 'content_image_upload')->name('ci_upload');
     });
     // Admin Management
     Route::group(['as' => 'am.', 'prefix' => 'admin-management'], function () {

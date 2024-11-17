@@ -79,8 +79,16 @@ import {
 import "ckeditor5/ckeditor5.css";
 
 // import "./style.css";
-
+const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content");
 const editorConfig = {
+    simpleUpload: {
+        uploadUrl: content_image_upload_url,
+        headers: {
+            "X-CSRF-TOKEN": csrfToken,
+        },
+    },
     toolbar: {
         items: [
             "undo",
@@ -402,7 +410,9 @@ const editorConfig = {
         ],
     },
 };
-const textAreas = document.querySelectorAll("textarea");
-for (const textArea of textAreas) {
-    ClassicEditor.create(textArea, editorConfig);
-}
+// const textAreas = document.querySelectorAll("textarea");
+// for (const textArea of textAreas) {
+//     ClassicEditor.create(textArea, editorConfig);
+// }
+window.CkEditorConfig = editorConfig;
+window.CkClassicEditor = ClassicEditor;

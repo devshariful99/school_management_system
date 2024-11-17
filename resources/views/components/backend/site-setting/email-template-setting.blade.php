@@ -78,7 +78,7 @@
                             </div>
                             <div class="form-group">
                                 <label>{{ __('Template') }}</label>
-                                <textarea name="template" id="template" class="form-control"></textarea>
+                                <textarea name="template" id="template" value="" class="form-control no-ckeditor5"></textarea>
                                 <x-feedback-alert :datas="['errors' => $errors, 'field' => 'template']" />
                             </div>
                             <div class="form-group">
@@ -99,4 +99,5 @@
         }
     </script>
     <script src="{{ asset('backend/admin/js/email_template.js') }}"></script>
+    <script src="{{ asset('ckEditor5/main.js') }}"></script>
 @endpush
