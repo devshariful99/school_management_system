@@ -1,4 +1,4 @@
 //Select 2
 $(document).ready(function () {
-    $("select:not(.no-select)").select2();
+    $("select.form-control:not(.no-select)").select2();
 });
