@@ -118,3 +118,9 @@ function availableTimezones()
 
     return $timezones;
 }
+function isImage($path)
+{
+    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+    $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    return in_array($extension, $imageExtensions);
+}

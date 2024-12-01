@@ -9,9 +9,10 @@ function file_upload(
     $.each(selectors.reverse(), function (index, selector) {
         var actualName = $(selector).attr("data-actualName");
         const inputElement = document.querySelector(selector);
-        const pond = FilePond.create(inputElement, {
-            acceptedFileTypes: ["image/*"],
-        });
+        const pond = FilePond.create(inputElement);
+        // const pond = FilePond.create(inputElement, {
+        //     acceptedFileTypes: ["image/*"],
+        // });
         const fileUrl = existingFiles[selector];
         console.log("existingFiles for selector:", selector, fileUrl);
         pond.setOptions({

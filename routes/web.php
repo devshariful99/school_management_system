@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AuditController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
 use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
+use App\Http\Controllers\Backend\Admin\TempFileController;
 use App\Http\Controllers\Backend\SiteSettingController;
 use Illuminate\Support\Facades\Response;
 
@@ -67,6 +68,12 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::controller(AuditController::class)->prefix('audits')->name('audit.')->group(function () {
         Route::get('audits', 'index')->name('index');
         Route::get('audits/details/{id}', 'details')->name('details');
+    });
+    // Temp File
+    Route::controller(TempFileController::class)->prefix('temp-files')->name('temp.')->group(function () {
+        Route::get('index', 'index')->name('index');
+        Route::get('download/{path}', 'download')->name('download');
+        Route::delete('delete/{id}', 'destroy')->name('destroy');
     });
 
     // Site Settings

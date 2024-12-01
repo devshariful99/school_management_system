@@ -14,7 +14,7 @@ use App\Http\Traits\FileManagementTrait;
 
 class AdminController extends Controller
 {
-    use FileManagementTrait;
+    use FileManagementTrait, DetailsCommonDataTrait;
     public function __construct()
     {
         $this->middleware('admin');
@@ -24,8 +24,6 @@ class AdminController extends Controller
         $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
         $this->middleware('permission:admin-status', ['only' => ['status']]);
     }
-
-    use DetailsCommonDataTrait;
     /**
      * Display a listing of the resource.
      */
@@ -35,14 +33,14 @@ class AdminController extends Controller
         if ($request->ajax()) {
             $admins = $admins->sortBy('sort_order');
             return DataTables::of($admins)
+                ->editColumn('role_id', function ($admin) {
+                    return $admin->role->name;
+                })
                 ->editColumn('status', function ($admin) {
                     return "<span class='" . $admin->getStatusBadgeBg() . "'>" . $admin->getStatusBadgeTitle() . "</span>";
                 })
                 ->editColumn('created_at', function ($admin) {
                     return timeFormat($admin->created_at);
-                })
-                ->editColumn('role_id', function ($admin) {
-                    return $admin->role->name;
                 })
                 ->editColumn('created_by', function ($admin) {
                     return creater_name($admin->creater_admin);
@@ -80,7 +78,7 @@ class AdminController extends Controller
                     ];
                     return view('components.backend.admin.action-buttons', compact('menuItems'))->render();
                 })
-                ->rawColumns(['status', 'created_at', 'created_by', 'action'])
+                ->rawColumns(['role_id', 'status', 'created_at', 'created_by', 'action'])
                 ->make(true);
         }
         return view('backend.admin.admin_management.admin.index', compact('admins'));

@@ -63,6 +63,12 @@
                         <p>{{ __('Audits') }}</p>
                     </a>
                 </li>
+                <li class="nav-item  @if ($page_slug == 'temp_file') active @endif">
+                    <a href="{{ route('temp.index') }}">
+                        <i class="icon-settings"></i>
+                        <p>{{ __('Temporary Files') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item  @if ($page_slug == 'site_setting') active @endif">
                     <a href="{{ route('site_setting.index') }}">
                         <i class="icon-settings"></i>

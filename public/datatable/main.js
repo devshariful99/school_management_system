@@ -72,6 +72,7 @@ function initializeDataTable({
                     render: function (data, type, row, meta) {
                         // Calculate serial number based on page and page length
                         const pageInfo = $(main_class).DataTable().page.info(); // Get current page info
+
                         return pageInfo.start + meta.row + 1; // Adjust serial number
                     },
                 },
@@ -128,9 +129,15 @@ function initializeDataTable({
                 }
             });
         } else {
-            table.on("init", function () {
-                $(main_class).find(".reorder").remove();
-            });
+            removeRowOrderIcon(table, main_class);
         }
+    });
+}
+
+function removeRowOrderIcon(table, main_class) {
+    // Attach event handler to the `draw` event
+    table.on("draw", function () {
+        // Find and remove reorder icons in the current page
+        $(main_class).find(".reorder").remove();
     });
 }
