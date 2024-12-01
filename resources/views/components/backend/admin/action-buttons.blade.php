@@ -1,8 +1,8 @@
-<div class="btn-group d-flex align-items-center gap-3 flex-wrap">
-    <i class="fa fa-list reorder float-left" style="cursor: move;"></i>
-    <a href="javascript:void(0)" class="btn btn-primary btn-rounded d-flex align-items-center justify-content-center"
-        style="max-width: 30px; max-height: 30px" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="icon-options-vertical"></i>
+<div class="btn-group d-flex align-items-center gap-3 flex-wrap justify-content-center">
+    <i class="icon-grid reorder fs-4 float-left" style="cursor: move;"></i>
+    <a href="javascript:void(0)" class="text-dark d-flex action-btn align-items-center justify-content-center"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="icon-settings fs-3"></i>
     </a>
     <ul class="dropdown-menu dropdown-menu-end">
         @foreach ($menuItems as $key => $menuItem)

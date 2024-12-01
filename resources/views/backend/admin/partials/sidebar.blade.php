@@ -24,7 +24,7 @@
             <ul class="nav nav-secondary">
                 <li class="nav-item  @if ($page_slug == 'dashboard') active @endif">
                     <a href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="icon-chart"></i>
                         <p>{{ __('Dashboard') }}</p>
                     </a>
                 </li>
@@ -32,7 +32,7 @@
                 <li class="nav-item  @if ($page_slug == 'admin' || $page_slug == 'role' || $page_slug == 'permission') active submenu @endif">
                     <a data-bs-toggle="collapse" href="#admin_management"
                         @if ($page_slug == 'admin') aria-expanded="true" @endif>
-                        <i class="fas fa-bars"></i>
+                        <i class="icon-people"></i>
                         <p>{{ __('Admin Management') }}</p>
                         <span class="caret"></span>
                     </a>
@@ -59,14 +59,14 @@
 
                 <li class="nav-item  @if ($page_slug == 'audits') active @endif">
                     <a href="{{ route('audit.index') }}">
-                        <i class="fas fa-home"></i>
+                        <i class="icon-ban"></i>
                         <p>{{ __('Audits') }}</p>
                     </a>
                 </li>
                 <li class="nav-item  @if ($page_slug == 'site_setting') active @endif">
                     <a href="{{ route('site_setting.index') }}">
-                        <i class="fas fa-home"></i>
-                        <p>{{ __('Site Settings') }}</p>
+                        <i class="icon-settings"></i>
+                        <p>{{ __('Application Settings') }}</p>
                     </a>
                 </li>
 

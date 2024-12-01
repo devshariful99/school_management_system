@@ -6,7 +6,15 @@ function initializeDataTable({
     order_route = "",
     model = "",
     table_columns = [], // Array for defining table columns
+    row_reorder = false,
 } = {}) {
+    let row_reorder_settings = false;
+    if (row_reorder) {
+        row_reorder_settings = {
+            selector: "td:last-child .reorder",
+            update: true,
+        };
+    }
     $(function () {
         var table = $(main_class).DataTable({
             dom: "Bfrtip",
@@ -15,10 +23,7 @@ function initializeDataTable({
             processing: true,
             serverSide: true,
             iDisplayLength: displayLength,
-            rowReorder: {
-                selector: "td:last-child .reorder",
-                update: true,
-            },
+            rowReorder: row_reorder_settings,
             buttons: [
                 "copy",
                 {
@@ -81,44 +86,51 @@ function initializeDataTable({
                 }),
             ],
         });
+        if (row_reorder) {
+            table.on("row-reorder", function (e, diff, edit) {
+                let orderData = [];
+                for (var i = 0; i < diff.length; i++) {
+                    let rowData = table.row(diff[i].node).data();
 
-        table.on("row-reorder", function (e, diff, edit) {
-            let orderData = [];
-            for (var i = 0; i < diff.length; i++) {
-                let rowData = table.row(diff[i].node).data();
+                    // Collect the IDs and new order for the server
+                    orderData.push({
+                        id: rowData.id, // Assuming the ID is part of the data
+                        newOrder: diff[i].newPosition,
+                    });
+                }
 
-                // Collect the IDs and new order for the server
-                orderData.push({
-                    id: rowData.id, // Assuming the ID is part of the data
-                    newOrder: diff[i].newPosition,
-                });
-            }
-
-            // If newOrder is not empty, send it to the server
-            if (orderData.length > 0) {
-                $.ajax({
-                    url: order_route, // Your route for sorting update
-                    type: "POST",
-                    data: {
-                        model: model,
-                        datas: orderData,
-                        _token: document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute("content"),
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            toastr.success(response.message);
-                        } else {
-                            handleErrors(response);
-                        }
-                        // table.ajax.reload(); // Reload the table to reflect changes
-                    },
-                    error: function (error) {
-                        toastr.error("Something went wrong. Please try again.");
-                    },
-                });
-            }
-        });
+                // If newOrder is not empty, send it to the server
+                if (orderData.length > 0) {
+                    $.ajax({
+                        url: order_route, // Your route for sorting update
+                        type: "POST",
+                        data: {
+                            model: model,
+                            datas: orderData,
+                            _token: document
+                                .querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content"),
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.message);
+                            } else {
+                                handleErrors(response);
+                            }
+                            // table.ajax.reload(); // Reload the table to reflect changes
+                        },
+                        error: function (error) {
+                            toastr.error(
+                                "Something went wrong. Please try again."
+                            );
+                        },
+                    });
+                }
+            });
+        } else {
+            table.on("init", function () {
+                $(main_class).find(".reorder").remove();
+            });
+        }
     });
 }

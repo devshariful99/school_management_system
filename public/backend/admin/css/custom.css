@@ -1,6 +1,26 @@
+:root {
+    --primary-color: #6861ce;
+}
+
+
 /*=============================================================
                 Datatable CSS
  =============================================================*/
+ .dataTable .action-btn, .dataTable .reorder {
+    transition: .4s;
+}
+.dataTable th:last-child {
+    text-align: center;
+}
+
+.dataTable .action-btn:hover {
+    transform: rotate(90deg);
+    color: var(--primary-color) !important;
+}
+.dataTable .reorder:hover{
+    transform: scale(1.1);
+    color: var(--primary-color) !important;
+}
 .dt-container .dt-buttons {
     display: inline-block;
 }

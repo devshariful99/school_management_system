@@ -64,6 +64,8 @@
                 export_columns: [0, 1, 2, 3, 4, 5],
                 model: 'Admin',
             };
+            // initializeDataTable(details);
+
             initializeDataTable(details);
         })
     </script>

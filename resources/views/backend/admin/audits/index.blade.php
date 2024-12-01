@@ -22,6 +22,7 @@
                                 <th>{{ __('Changed By') }}</th>
                                 <th>{{ __('IP Address') }}</th>
                                 <th>{{ __('Modified At') }}</th>
+                                <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
