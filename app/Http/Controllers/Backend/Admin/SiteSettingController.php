@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EmailTemplateRequest;
@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\SiteSettingRequest;
 use App\Models\EmailTemplate;
 use App\Models\SiteSetting;
 use App\Models\TempFile;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +78,7 @@ class SiteSettingController extends Controller
         }
     }
 
-    private function set($key, $value, $env)
+    private function set($key, $value, $env): array
     {
         foreach ($env as $env_key => $env_value) {
             $entry = explode("=", $env_value, 2);
@@ -89,13 +90,13 @@ class SiteSettingController extends Controller
         }
         return $env;
     }
-    public function et_edit($id)
+    public function et_edit(int $id): JsonResponse
     {
         $data['email_template'] =  EmailTemplate::findOrFail($id);
         return response()->json($data);
     }
 
-    public function et_update(EmailTemplateRequest $req, $id)
+    public function et_update(EmailTemplateRequest $req, int $id): JsonResponse
     {
         try {
             $data = EmailTemplate::findOrFail($id);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ContentImage;
 use App\Models\TempFile;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,7 @@ class FileManagementController extends Controller
         $this->middleware('admin');
     }
 
-    public function uploadTempFile(Request $request)
+    public function uploadTempFile(Request $request): string
     {
         if ($request->hasFile($request->name)) {
             $file = $request->file($request->name);
@@ -37,7 +38,7 @@ class FileManagementController extends Controller
         return $request->name;
     }
 
-    public function deleteTempFile()
+    public function deleteTempFile(): JsonResponse
     {
 
         $temp_file = TempFile::findOrFail(request()->getContent());
@@ -67,7 +68,7 @@ class FileManagementController extends Controller
 
 
 
-    public function deleteUnsavedTempFiles(Request $request)
+    public function deleteUnsavedTempFiles(Request $request): JsonResponse
     {
         $tempFileIds = $request->input('tempFileIds');
         foreach ($tempFileIds as $fileId) {
@@ -86,7 +87,7 @@ class FileManagementController extends Controller
 
 
 
-    private function getCreator($creatorType)
+    private function getCreator($creatorType): ?object
     {
         switch ($creatorType) {
             case 'user':
@@ -97,7 +98,7 @@ class FileManagementController extends Controller
     }
 
 
-    public function content_image_upload(Request $request)
+    public function content_image_upload(Request $request): JsonResponse
     {
         $request->validate([
             'upload' => 'required|image|mimes:jpeg,png,jpg,gif',

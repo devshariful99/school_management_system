@@ -12,7 +12,7 @@
                         'permissions' => ['permission-list', 'permission-delete', 'permission-status'],
                     ]" />
                 </div>
-                <form method="POST" action="{{ route('am.permission.update', $permission->id) }}">
+                <form method="POST" action="{{ route('am.permission.update', encrypt($permission->id)) }}">
                     @csrf
                     @method('PUT')
                     <div class="card-body">

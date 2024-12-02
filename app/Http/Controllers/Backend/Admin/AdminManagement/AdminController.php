@@ -10,7 +10,9 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Traits\FileManagementTrait;
-
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 
 class AdminController extends Controller
 {
@@ -18,7 +20,8 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
-        $this->middleware('permission:admin-list|admin-delete|admin-status', ['only' => ['index', 'show']]);
+        $this->middleware('permission:admin-list|admin-details|admin-delete|admin-status', ['only' => ['index']]);
+        $this->middleware('permission:admin-details', ['only' => ['show']]);
         $this->middleware('permission:admin-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:admin-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:admin-delete', ['only' => ['destroy']]);
@@ -49,27 +52,27 @@ class AdminController extends Controller
                     $menuItems = [
                         [
                             'routeName' => 'javascript:void(0)',
-                            'data-id' => $admin->id,
+                            'data-id' => encrypt($admin->id),
                             'className' => 'view',
                             'label' => 'Details',
                             'permissions' => ['admin-list', 'admin-delete', 'admin-status']
                         ],
                         [
                             'routeName' => 'am.admin.status',
-                            'params' => [$admin->id],
+                            'params' => [encrypt($admin->id)],
                             'label' => $admin->getStatusBtnTitle(),
                             'permissions' => ['admin-status']
                         ],
                         [
                             'routeName' => 'am.admin.edit',
-                            'params' => [$admin->id],
+                            'params' => [encrypt($admin->id)],
                             'label' => 'Edit',
                             'permissions' => ['admin-edit']
                         ],
 
                         [
                             'routeName' => 'am.admin.destroy',
-                            'params' => [$admin->id],
+                            'params' => [encrypt($admin->id)],
                             'label' => 'Delete',
                             'delete' => true,
                             'permissions' => ['admin-delete']
@@ -87,7 +90,7 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $data['roles'] = Role::latest()->get();
         return view('backend.admin.admin_management.admin.create', $data);
@@ -96,7 +99,7 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdminRequest $req)
+    public function store(AdminRequest $req): RedirectResponse
     {
 
         $admin = new Admin();
@@ -118,9 +121,9 @@ class AdminController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(string $id): JsonResponse
     {
-        $data = Admin::with(['creater_admin', 'updater_admin'])->findOrFail($id);
+        $data = Admin::with(['creater_admin', 'updater_admin'])->findOrFail(decrypt($id));
         $this->AdminAuditColumnsData($data);
         $this->statusColumnData($data);
         $data->image = auth_storage_url($data->image);
@@ -130,9 +133,9 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(string $id): View
     {
-        $data['admin'] = Admin::findOrFail($id);
+        $data['admin'] = Admin::findOrFail(decrypt($id));
         $data['roles'] = Role::latest()->get();
         return view('backend.admin.admin_management.admin.edit', $data);
     }
@@ -140,9 +143,9 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminRequest $req, int $id)
+    public function update(AdminRequest $req, string $id): RedirectResponse
     {
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::findOrFail(decrypt($id));
 
         if (isset($req->image)) {
             $this->handleFilepondFileUpload($admin, $req->image, $admin->image);
@@ -163,9 +166,9 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(string $id): RedirectResponse
     {
-        $admin = Admin::with('role')->findOrFail($id);
+        $admin = Admin::with('role')->findOrFail(decrypt($id));
         if ($admin->role_id == 1) {
             session()->flash('error', 'Super Admin can not be deleted!');
             return redirect()->route('am.admin.index');
@@ -176,9 +179,9 @@ class AdminController extends Controller
         return redirect()->route('am.admin.index');
     }
 
-    public function status(int $id)
+    public function status(string $id): RedirectResponse
     {
-        $admin = Admin::findOrFail($id);
+        $admin = Admin::findOrFail(decrypt($id));
         $admin->status = !$admin->status;
         $admin->updated_by = admin()->id;
         $admin->update();

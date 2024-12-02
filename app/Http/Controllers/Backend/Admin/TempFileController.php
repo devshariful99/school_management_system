@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\TempFile;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -13,9 +14,9 @@ class TempFileController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
-        $this->middleware('permission:temp-list|temp-delete|temp-download', ['only' => ['index', 'show']]);
-        $this->middleware('permission:temp-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:temp-list|temp-delete|temp-download', ['only' => ['index']]);
         $this->middleware('permission:temp-download', ['only' => ['download']]);
+        $this->middleware('permission:temp-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -92,7 +93,7 @@ class TempFileController extends Controller
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         if ($id === 'all') {
             $temp_files = TempFile::all();

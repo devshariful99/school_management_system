@@ -13,7 +13,8 @@
                     ]" />
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('am.admin.update', $admin->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('am.admin.update', encrypt($admin->id)) }}" method="POST"
+                        enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="form-group">

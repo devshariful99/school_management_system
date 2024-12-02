@@ -14,9 +14,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('documentations', function (Blueprint $table) {
             $table->id();
+            $table->integer("sort_order")->default(0);
+            $table->string('title')->unique();
+            $table->string('key');
+            $table->enum('type', ['create', 'update'])->nullable();
+            $table->longText('documentation');
             $table->timestamps();
+            $table->softDeletes();
+            $this->addAdminAuditColumns($table);
         });
     }
 
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('documentations');
     }
 };

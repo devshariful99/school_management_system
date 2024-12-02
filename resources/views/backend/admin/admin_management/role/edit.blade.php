@@ -42,7 +42,7 @@
                         'permissions' => ['role-list', 'role-delete', 'role-status'],
                     ]" />
                 </div>
-                <form method="POST" action="{{ route('am.role.update', $role->id) }}" autocomplete="off">
+                <form method="POST" action="{{ route('am.role.update', encrypt($role->id)) }}" autocomplete="off">
                     @method('PUT')
                     @csrf
                     <div class="card-body">

@@ -7,6 +7,9 @@ use App\Http\Requests\Admin\PermissionRequest;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Http\Traits\DetailsCommonDataTrait;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class PermissionController extends Controller
@@ -15,11 +18,11 @@ class PermissionController extends Controller
     public function __construct()
     {
         $this->middleware('admin');
-        $this->middleware('permission:permission-list|permission-create|permission-edit|permission-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:permission-list|permission-details|permission-delete', ['only' => ['index']]);
+        $this->middleware('permission:permission-details', ['only' => ['show']]);
         $this->middleware('permission:permission-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:permission-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:permission-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:permission-status', ['only' => ['status']]);
     }
 
     /**
@@ -41,21 +44,21 @@ class PermissionController extends Controller
                     $menuItems = [
                         [
                             'routeName' => 'javascript:void(0)',
-                            'data-id' => $permission->id,
+                            'data-id' => encrypt($permission->id),
                             'className' => 'view',
                             'label' => 'Details',
                             'permissions' => ['permission-list', 'permission-delete']
                         ],
                         [
                             'routeName' => 'am.permission.edit',
-                            'params' => [$permission->id],
+                            'params' => [encrypt($permission->id)],
                             'label' => 'Edit',
                             'permissions' => ['permission-edit']
                         ],
 
                         [
                             'routeName' => 'am.permission.destroy',
-                            'params' => [$permission->id],
+                            'params' => [encrypt($permission->id)],
                             'label' => 'Delete',
                             'delete' => true,
                             'permissions' => ['permission-delete']
@@ -72,7 +75,7 @@ class PermissionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         return view('backend.admin.admin_management.permission.create');
     }
@@ -80,7 +83,7 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PermissionRequest $req)
+    public function store(PermissionRequest $req): RedirectResponse
     {
         $permission = new Permission();
         $permission->name = $req->name;
@@ -95,9 +98,9 @@ class PermissionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(string $id): JsonResponse
     {
-        $data = Permission::with(['creater_admin', 'updater_admin'])->findOrFail($id);
+        $data = Permission::with(['creater_admin', 'updater_admin'])->findOrFail(decrypt($id));
         $this->AdminAuditColumnsData($data);
         return response()->json($data);
     }
@@ -105,18 +108,18 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(string $id): View
     {
-        $data['permission'] = Permission::findOrFail($id);
+        $data['permission'] = Permission::findOrFail(decrypt($id));
         return view('backend.admin.admin_management.permission.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PermissionRequest $request, int $id)
+    public function update(PermissionRequest $request, string $id): RedirectResponse
     {
-        $permission = Permission::findOrFail($id);
+        $permission = Permission::findOrFail(decrypt($id));
         $permission->name = $request->name;
         $permission->prefix = $request->prefix;
         $permission->guard_name = 'admin';
@@ -129,9 +132,9 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        $permission = Permission::findOrFail($id);
+        $permission = Permission::findOrFail(decrypt($id));
         $permission->deleted_by = auth()->guard('admin')->user()->id;
         $permission->delete();
         session()->flash('success', "$permission->name permission deleted successfully");

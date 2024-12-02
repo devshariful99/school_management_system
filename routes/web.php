@@ -12,7 +12,7 @@ use App\Http\Controllers\Backend\Admin\AuditController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
 use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
 use App\Http\Controllers\Backend\Admin\TempFileController;
-use App\Http\Controllers\Backend\SiteSettingController;
+use App\Http\Controllers\Backend\Admin\SiteSettingController;
 use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {

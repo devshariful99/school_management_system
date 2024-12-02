@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Audit;
+use Illuminate\Contracts\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class AuditController extends Controller
@@ -51,7 +52,7 @@ class AuditController extends Controller
         return view('backend.admin.audits.index', compact('audits'));
     }
 
-    public function details($id)
+    public function details(string $id): View
     {
         $audit = Audit::findOrFail(decrypt($id));
         return view('backend.admin.audits.details', compact('audit'));
