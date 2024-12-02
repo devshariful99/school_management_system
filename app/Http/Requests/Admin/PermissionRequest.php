@@ -24,7 +24,7 @@ class PermissionRequest extends FormRequest
         return [
             'prefix' => 'required',
 
-        ]+($this->isMethod('POST') ? $this->store() : $this->update());
+        ] + ($this->isMethod('POST') ? $this->store() : $this->update());
     }
     protected function store(): array
     {
@@ -36,7 +36,7 @@ class PermissionRequest extends FormRequest
     protected function update(): array
     {
         return [
-            'name' => 'required|unique:permissions,name,' . $this->route('permission'),
+            'name' => 'required|unique:permissions,name,' . decrypt($this->route('permission')),
         ];
     }
 }

@@ -27,15 +27,15 @@ class LoginController extends Controller
         if ($check) {
             if ($check->status == 1) {
                 if (Auth::guard('admin')->attempt($credentials)) {
-                    // flash()->addSuccess('Welcome');
+                    session()->flash('success', 'Welcome');
                     return redirect()->route('admin.dashboard');
                 }
-                // flash()->addError('Invalid credentials');
+                session()->flash('error', 'Invalid credentials');
             } else {
-                // flash()->addError('Your account has been disabled. Please contact support.');
+                session()->flash('warning', 'Your account has been disabled. Please contact support.');
             }
         } else {
-            // flash()->addError('Admin Not Found');
+            session()->flash('error', 'Record not found');
         }
         return redirect()->route('admin.login');
     }

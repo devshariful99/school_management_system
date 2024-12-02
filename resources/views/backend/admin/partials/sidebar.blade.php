@@ -63,6 +63,12 @@
                         <p>{{ __('Audits') }}</p>
                     </a>
                 </li>
+                <li class="nav-item  @if ($page_slug == 'documentation') active @endif">
+                    <a href="{{ route('documentation.index') }}">
+                        <i class="icon-docs"></i>
+                        <p>{{ __('Documentation') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item  @if ($page_slug == 'temp_file') active @endif">
                     <a href="{{ route('temp.index') }}">
                         <i class="icon-trash"></i>

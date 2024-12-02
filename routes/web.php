@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\Admin\AdminManagement\PermissionController;
 use App\Http\Controllers\Backend\Admin\AdminManagement\RoleController;
 use App\Http\Controllers\Backend\Admin\AuditController;
 use App\Http\Controllers\Backend\Admin\DatatableController as AdminDatatableController;
+use App\Http\Controllers\Backend\Admin\DocumentationController;
 use App\Http\Controllers\Backend\Admin\FileManagementController as AdminFileManagementController;
 use App\Http\Controllers\Backend\Admin\TempFileController;
 use App\Http\Controllers\Backend\Admin\SiteSettingController;
@@ -64,10 +65,13 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('permission/status/{permission}', [PermissionController::class, 'status'])->name('permission.status');
     });
 
+    // Documentation
+    Route::resource('documentation', DocumentationController::class);
+
     // Audit Management
     Route::controller(AuditController::class)->prefix('audits')->name('audit.')->group(function () {
-        Route::get('audits', 'index')->name('index');
-        Route::get('audits/details/{id}', 'details')->name('details');
+        Route::get('/', 'index')->name('index');
+        Route::get('details/{id}', 'details')->name('details');
     });
     // Temp File
     Route::controller(TempFileController::class)->prefix('temp-files')->name('temp.')->group(function () {

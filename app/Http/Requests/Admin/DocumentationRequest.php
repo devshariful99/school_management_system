@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminRequest extends FormRequest
+class DocumentationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,9 @@ class AdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:4',
-            'role' => 'required|exists:roles,id',
+            'key' => 'required|string',
+            'type' => 'nullable|string|in:create,update',
+            'documentation' => 'required|string',
 
         ]
             +
@@ -33,9 +34,7 @@ class AdminRequest extends FormRequest
     protected function store(): array
     {
         return [
-            'email' => 'required|unique:admins,email',
-            'password' => 'required|min:6|confirmed',
-            'image' => 'required',
+            'title' => 'required|unique:documentations,title',
         ];
     }
 
@@ -43,9 +42,7 @@ class AdminRequest extends FormRequest
     protected function update(): array
     {
         return [
-            'email' => 'required|unique:admins,email,' . decrypt($this->route('admin')),
-            'password' => 'nullable|min:6|confirmed',
-            'image' => 'nullable',
+            'title' => 'required|unique:documentations,title,' . decrypt($this->route('documentation')),
         ];
     }
 }

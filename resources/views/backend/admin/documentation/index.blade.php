@@ -1,4 +1,4 @@
-@extends('backend.admin.layouts.master', ['page_slug' => 'doc'])
+@extends('backend.admin.layouts.master', ['page_slug' => 'documentation'])
 @section('title', 'Documentation List')
 @section('content')
     <div class="row">
@@ -7,7 +7,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Documentation List') }}</h4>
                     <x-backend.admin.button :datas="[
-                        'routeName' => 'doc.create',
+                        'routeName' => 'documentation.create',
                         'label' => 'Add New',
                         'permissions' => ['documentation-create'],
                     ]" />
@@ -53,7 +53,7 @@
                 table_columns: table_columns,
                 main_class: '.datatable',
                 displayLength: 10,
-                main_route: "{{ route('doc.index') }}",
+                main_route: "{{ route('documentation.index') }}",
                 order_route: "{{ route('update.sort.order') }}",
                 export_columns: [0, 1, 2, 3, 4, 5, 6],
                 model: 'Documentation',
@@ -71,7 +71,7 @@
         // Event listener for viewing details
         $(document).on("click", ".view", function() {
             let id = $(this).data("id");
-            let route = "{{ route('doc.show', ['id']) }}";
+            let route = "{{ route('documentation.show', ['id']) }}";
             const detailsUrl = route.replace("id", id);
             const headers = [{
                     label: "Title",

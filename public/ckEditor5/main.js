@@ -1,17 +1,21 @@
-const textAreas = $("textarea:not(.no-ckeditor5)");
-textAreas.each((index, textArea) => {
-    const currentConfig = { ...CkEditorConfig };
-    currentConfig.initialData = textArea.value;
+$(document).ready(function () {
+    const textAreas = $("textarea:not(.no-ckeditor5)");
+    textAreas.each((index, textArea) => {
+        const currentConfig = { ...CkEditorConfig };
+        currentConfig.initialData = textArea.value;
 
-    CkClassicEditor.create(textArea, currentConfig)
-        .then((editor) => {
-            console.log("Editor was initialized", editor);
-        })
-        .catch((error) => {
-            console.error(`Error initializing editor ${index + 1}:`, error);
-            // Add error handling here, e.g., display error message to user
-            alert(`Error initializing editor ${index + 1}: ${error.message}`);
-        });
+        CkClassicEditor.create(textArea, currentConfig)
+            .then((editor) => {
+                console.log("Editor was initialized", editor);
+            })
+            .catch((error) => {
+                console.error(`Error initializing editor ${index + 1}:`, error);
+                // Add error handling here, e.g., display error message to user
+                alert(
+                    `Error initializing editor ${index + 1}: ${error.message}`
+                );
+            });
+    });
 });
 const editors = [];
 function initializeCKEditor(textAreas) {

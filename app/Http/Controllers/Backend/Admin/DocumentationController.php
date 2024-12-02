@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\DocumentationRequest;
 use App\Models\Documentation;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Traits\DetailsCommonDataTrait;
+
 
 class DocumentationController extends Controller
 {
+    use DetailsCommonDataTrait;
     public function __construct()
     {
         $this->middleware('admin');
@@ -45,14 +51,14 @@ class DocumentationController extends Controller
                             'permissions' => ['documentation-details']
                         ],
                         [
-                            'routeName' => 'doc.edit',
+                            'routeName' => 'documentation.edit',
                             'params' => [encrypt($doc->id)],
                             'label' => 'Edit',
                             'permissions' => ['documentation-edit']
                         ],
 
                         [
-                            'routeName' => 'doc.destroy',
+                            'routeName' => 'documentation.destroy',
                             'params' => [encrypt($doc->id)],
                             'label' => 'Delete',
                             'delete' => true,
@@ -65,54 +71,78 @@ class DocumentationController extends Controller
                 ->rawColumns(['created_at', 'created_by', 'action'])
                 ->make(true);
         }
-        return view('backend.admin.documentation.index', compact('admins'));
+        return view('backend.admin.documentation.index', compact('docs'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('backend.admin.documentation.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DocumentationRequest $req): RedirectResponse
     {
-        //
+        $doc = new Documentation();
+        $doc->title = $req->title;
+        $doc->key = $req->key;
+        $doc->type = $req->type;
+        $doc->documentation = $req->documentation;
+        $doc->created_by = admin()->id;
+        $doc->save();
+        session()->flash('success', 'Documentation created successfully!');
+        return redirect()->route('documentation.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
-        //
+        $data = Documentation::with(['creater_admin', 'updater_admin'])->findOrFail(decrypt($id));
+        $data->documenatation = html_entity_decode($data->documentation);
+        $this->AdminAuditColumnsData($data);
+        return response()->json($data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): View
     {
-        //
+        $data['doc'] = Documentation::findOrFail(decrypt($id));
+        return view('backend.admin.documentation.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DocumentationRequest $req, string $id): RedirectResponse
     {
-        //
+        $doc = Documentation::findOrFail(decrypt($id));
+        $doc->title = $req->title;
+        $doc->key = $req->key;
+        $doc->type = $req->type;
+        $doc->documentation = $req->documentation;
+        $doc->updated_by = admin()->id;
+        $doc->update();
+        session()->flash('success', 'Documentation updated successfully!');
+        return redirect()->route('documentation.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        $doc = Documentation::findOrFail(decrypt($id));
+        $doc->deleted_by = admin()->id;
+        $doc->delete();
+        session()->flash('success', 'Documentation deleted successfully!');
+        return redirect()->route('documentation.index');
     }
 }
