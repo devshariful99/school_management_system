@@ -38,7 +38,7 @@
                     <x-backend.admin.button :datas="[
                         'routeName' => 'am.role.index',
                         'label' => 'Back',
-                        'permissions' => ['role-list', 'role-delete', 'role-status'],
+                        'permissions' => ['role-list', 'role-delete', 'role-details'],
                     ]" />
                 </div>
                 <form method="POST" action="{{ route('am.role.store') }}">

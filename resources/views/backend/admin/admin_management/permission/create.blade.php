@@ -9,7 +9,7 @@
                     <x-backend.admin.button :datas="[
                         'routeName' => 'am.permission.index',
                         'label' => 'Back',
-                        'permissions' => ['permission-list', 'permission-delete', 'permission-status'],
+                        'permissions' => ['permission-list', 'permission-details', 'permission-delete'],
                     ]" />
                 </div>
                 <form method="POST" action="{{ route('am.permission.store') }}">

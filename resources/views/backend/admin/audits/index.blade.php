@@ -6,11 +6,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Audit List') }}</h4>
-                    {{-- <x-backend.admin.button :datas="[
-                        'routeName' => 'am.admin.create',
-                        'label' => 'Add New',
-                        'permissions' => ['admin-create'],
-                    ]" /> --}}
                 </div>
                 <div class="card-body">
                     <table class="table table-responsive table-striped datatable">

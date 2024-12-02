@@ -9,7 +9,7 @@
                     <x-backend.admin.button :datas="[
                         'routeName' => 'am.admin.index',
                         'label' => 'Back',
-                        'permissions' => ['admin-list', 'admin-delete', 'admin-status'],
+                        'permissions' => ['admin-list', 'admin-details', 'admin-delete', 'admin-status'],
                     ]" />
                 </div>
                 <div class="card-body">
