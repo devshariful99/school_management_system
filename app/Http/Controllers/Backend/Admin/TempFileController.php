@@ -38,11 +38,11 @@ class TempFileController extends Controller
                         </div>";
                     } else {
                         return "<a class='btn btn-info btn-sm'
-                            href='" . route('temp.download', encrypt($temp->path . '/' . $temp->filename)) . "'><i class='icon-doc fs-3'></i></a>";
+                            href='javascript:void(0)'><i class='icon-doc fs-3'></i></a>";
                     }
                 })
                 ->editColumn('filename', function ($temp) {
-                    return "<a class='btn btn-info btn-sm' target='_blank'
+                    return "<a class='btn btn-info btn-sm'
                             href='" . route('temp.download', encrypt($temp->path . '/' . $temp->filename)) . "'><i class='icon-arrow-down-circle fs-3 mt-1'></i></a>";
                 })
                 ->editColumn('created_at', function ($temp) {
@@ -58,7 +58,7 @@ class TempFileController extends Controller
                     $menuItems = [
                         [
                             'routeName' => 'temp.destroy',
-                            'params' => [$temp->id],
+                            'params' => [encrypt($temp->id)],
                             'label' => 'Delete',
                             'delete' => true,
                             'permissions' => ['temp-delete']
@@ -79,16 +79,34 @@ class TempFileController extends Controller
         if (Storage::exists('public/' . $file_url)) {
             $fileExtension = pathinfo($file_url, PATHINFO_EXTENSION);
 
-            if (strtolower($fileExtension) === 'pdf') {
-                return response()->file(storage_path('app/public/' . $file_url), [
-                    'Content-Disposition' => 'inline; filename="' . basename($file_url) . '"'
-                ]);
-            } else {
-                return response()->download(storage_path('app/public/' . $file_url), basename($file_url));
-            }
+            // if (strtolower($fileExtension) === 'pdf') {
+            //     return response()->file(storage_path('app/public/' . $file_url), [
+            //         'Content-Disposition' => 'inline; filename="' . basename($file_url) . '"'
+            //     ]);
+            // } else {
+            return response()->download(storage_path('app/public/' . $file_url), basename($file_url));
+            // }
         } else {
             session()->flash('error', 'File not found!');
             return redirect()->route('temp.index');
         }
+    }
+
+    public function destroy(string $id)
+    {
+        if ($id === 'all') {
+            $temp_files = TempFile::all();
+            foreach ($temp_files as $file) {
+                Storage::deleteDirectory('public/' . $file->path);
+                $file->forceDelete();
+            }
+        } else {
+            $temp_file = TempFile::findOrFail(decrypt($id));
+            Storage::deleteDirectory('public/' . $temp_file->path);
+            $temp_file->forceDelete();
+        }
+
+        session()->flash('success', 'File deleted successfully');
+        return redirect()->route('temp.index');
     }
 }
