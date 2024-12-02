@@ -44,7 +44,7 @@
                 <form method="POST" action="{{ route('am.role.store') }}">
                     @csrf
                     <div class="card-body">
-                        <div class="form-group">
+                        <div class="form-group px-0">
                             <label>{{ __('Name') }}</label>
                             <input type="text" name="name"
                                 class="form-control  {{ $errors->has('name') ? ' is-invalid' : '' }}"
