@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->string('key');
             $table->enum('type', ['create', 'update'])->nullable();
-            $table->longText('documentation');
+            $table->longText('documentation')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $this->addAdminAuditColumns($table);
