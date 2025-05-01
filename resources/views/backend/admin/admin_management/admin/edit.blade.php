@@ -6,46 +6,50 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="cart-title">{{ __('Edit Admin') }}</h4>
-                    <a href="{{ route('am.admin.index') }}" class="btn btn-sm btn-primary">{{ __('Back') }}</a>
+                    <x-backend.admin.button :datas="[
+                        'routeName' => 'am.admin.index',
+                        'label' => 'Back',
+                        'permissions' => ['admin-list', 'admin-details', 'admin-delete', 'admin-status'],
+                    ]" />
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('am.admin.update', $admin->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('am.admin.update', encrypt($admin->id)) }}" method="POST"
+                        enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="form-group">
                             <label>{{ __('Name') }}</label>
                             <input type="text" name="name" value="{{ $admin->name }}" class="form-control"
                                 placeholder="Enter name">
-                            @include('alerts.feedback', ['field' => 'name'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'name']" />
                         </div>
                         <div class="form-group">
                             <label>{{ __('Role') }}</label>
                             <select name="role" class="form-control">
-                                <option value="" selected hidden>{{__('Select Role')}}</option>
+                                <option value="" selected hidden>{{ __('Select Role') }}</option>
                                 @foreach ($roles as $role)
-                                    <option value="{{$role->id}}" {{$admin->role_id == $role->id ? 'selected' : ''}}>{{$role->name}}</option>
+                                    <option value="{{ $role->id }}"
+                                        {{ $admin->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
                                 @endforeach
                             </select>
-                            @include('alerts.feedback', ['field' => 'role'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'role']" />
                         </div>
                         <div class="form-group">
                             <label>{{ __('Image') }}</label>
-                            <input type="file" accept="image/*" name="image" class="form-control">
-                            @include('alerts.feedback', ['field' => 'image'])
+                            <input type="file" accept="image/*" name="uploadImage" data-actualName="image"
+                                class="form-control filepond" id="image">
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'image']" />
                         </div>
-                        @if ($admin->image)
-                            <img src="{{ asset('storage/' . $admin->image) }}" alt="" width="100" height="100">
-                        @endif
                         <div class="form-group">
                             <label>{{ __('Email') }}</label>
                             <input type="text" name="email" value="{{ $admin->email }}" class="form-control"
                                 placeholder="Enter email">
-                            @include('alerts.feedback', ['field' => 'email'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'email']" />
                         </div>
                         <div class="form-group">
                             <label>{{ __('Password') }}</label>
                             <input type="password" name="password" class="form-control" placeholder="Enter password">
-                            @include('alerts.feedback', ['field' => 'password'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'password']" />
                         </div>
                         <div class="form-group">
                             <label>{{ __('Confirm Password') }}</label>
@@ -61,3 +65,16 @@
         </div>
     </div>
 @endsection
+@push('js')
+    {{-- FilePond  --}}
+    <script src="{{ asset('backend/admin/filepond/filepond.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            const existingFiles = {
+                "#image": "{{ $admin->image ? asset('storage/' . $admin->image) : '' }}",
+            };
+            file_upload(["#image"], "uploadImage", "admin", existingFiles, false);
+        });
+    </script>
+    {{-- FilePond  --}}
+@endpush

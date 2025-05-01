@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Admin extends AuthBaseModel
+class Admin extends AuthBaseModel implements Auditable
 {
-    use HasFactory, HasRoles;
-    
+    use HasFactory, HasRoles, \OwenIt\Auditing\Auditable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +46,8 @@ class Admin extends AuthBaseModel
         ];
     }
 
-    public function role(){
+    public function role()
+    {
         return $this->belongsTo(Role::class, 'role_id');
     }
 }

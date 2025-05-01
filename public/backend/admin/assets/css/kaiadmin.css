@@ -2520,7 +2520,7 @@ label {
   font-size: 1rem;
   border-color: #ebedf2;
   padding: 0.6rem 1rem;
-  height: inherit !important;
+  /* height: inherit !important; */
   border-width: 2px; }
   .form-control:focus {
     border-color: #3e93ff; }
@@ -3178,7 +3178,8 @@ label.error {
   padding: 0px 30px; }
   .navbar-header .container-fluid {
     min-height: inherit;
-    padding: 0 !important; }
+    /* padding: 0 !important; */
+ }
   .navbar-header .dropdown-toggle::after {
     margin-left: 0; }
 

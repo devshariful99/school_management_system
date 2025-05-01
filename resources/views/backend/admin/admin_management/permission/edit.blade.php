@@ -6,23 +6,27 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Edit Permission') }}</h4>
-                    <a href="{{route('am.permission.index')}}" class="btn btn-sm btn-primary">Back</a>
+                    <x-backend.admin.button :datas="[
+                        'routeName' => 'am.permission.index',
+                        'label' => 'Back',
+                        'permissions' => ['permission-list', 'permission-details', 'permission-delete'],
+                    ]" />
                 </div>
-                <form method="POST" action="{{ route('am.permission.update',$permission->id) }}">
-                    @method('PUT')
+                <form method="POST" action="{{ route('am.permission.update', encrypt($permission->id)) }}">
                     @csrf
+                    @method('PUT')
                     <div class="card-body">
                         <div class="form-group">
                             <label>{{ __('Name') }}</label>
                             <input type="text" name="name" class="form-control" placeholder="Enter permission name"
                                 value="{{ $permission->name }}">
-                            @include('alerts.feedback', ['field' => 'name'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'name']" />
                         </div>
                         <div class="form-group">
                             <label>{{ __('Prefix') }}</label>
                             <input type="text" name="prefix" class="form-control" placeholder="Enter permission prefix"
                                 value="{{ $permission->prefix }}">
-                            @include('alerts.feedback', ['field' => 'prefix'])
+                            <x-feedback-alert :datas="['errors' => $errors, 'field' => 'prefix']" />
                         </div>
                     </div>
                     <div class="card-footer text-end">

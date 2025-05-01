@@ -5,20 +5,21 @@ namespace App\Models;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Role as SpatieRole;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Role extends SpatieRole
+class Role extends SpatieRole implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
-    public function created_admin()
+    public function creater_admin()
     {
         return $this->belongsTo(Admin::class, 'created_by');
     }
-    public function updated_admin()
+    public function updater_admin()
     {
         return $this->belongsTo(Admin::class, 'updated_by');
     }
-    public function deleted_admin()
+    public function deleter_admin()
     {
         return $this->belongsTo(Admin::class, 'deleted_by');
     }

@@ -1,0 +1,187 @@
+:root {
+    --primary-color: #6861ce;
+}
+
+
+/*=============================================================
+                Datatable CSS
+ =============================================================*/
+ .dataTable .action-btn, .dataTable .reorder {
+    transition: .4s;
+}
+.dataTable th:last-child {
+    text-align: center;
+}
+
+.dataTable .action-btn:hover {
+    transform: rotate(90deg);
+    color: var(--primary-color) !important;
+}
+.dataTable .reorder:hover{
+    transform: scale(1.1);
+    color: var(--primary-color) !important;
+}
+.dt-container .dt-buttons {
+    display: inline-block;
+}
+
+.dt-container .dt-search {
+    float: right;
+}
+
+.dt-container .dt-info {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.dt-container .dt-paging {
+    margin-top: 10px;
+    float: right;
+}
+
+/*=============================================================
+                Site Settings CSS
+ =============================================================*/
+ .site_settings .tab {
+    border-radius: 5px 0 0 5px;
+    border: 1px solid #ccc;
+    min-height: 80vh;
+}
+
+.site_settings .tab button {
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1em;
+    color: rgba(34, 42, 66, 0.7);
+    text-transform: uppercase;
+}
+
+.site_settings .tab button:hover {
+    background-color: #ddd;
+}
+
+.site_settings .tabcontent {
+    border-radius: 0 5px 5px 0;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    border-left: none;
+    min-height: 80vh;
+}
+
+@media only screen and (max-width: 767px) {
+    .site_settings .tab button {
+        width: auto !important;
+        font-size: .6em;
+    }
+
+    .site_settings .tab {
+        min-height: auto !important;
+    }
+
+    .site_settings .tabcontent {
+        min-height: auto !important;
+    }
+}
+
+
+/*=============================================================
+                Check Box CSS
+ =============================================================*/
+.check_box {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 0.3em;
+}
+
+
+.check_box input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: auto;
+    cursor: pointer;
+    outline: none;
+    height: 3em;
+    width: 7.5em;
+    /* background-color: #000000;
+                         */
+    background: -o-linear-gradient(315deg, #ce3131, #ce31318f);
+    background: linear-gradient(135deg, #ce3131, #ce31318f);
+    -webkit-transform: skewX(-7deg);
+    -ms-transform: skewX(-7deg);
+    transform: skewX(-7deg);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.check_box input[type="checkbox"]:before {
+    font-size: 1em;
+    content: "OFF";
+    position: absolute;
+    width: 3em;
+    height: 2.2em;
+    background-color: #ffffff;
+    color: #ce3131;
+    top: 0.42em;
+    left: 0.42em;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.check_box input[type="checkbox"]:checked {
+    background: -o-linear-gradient(315deg, #31ce36, #31ce368f);
+    background: linear-gradient(135deg, #31ce36, #31ce368f);
+}
+
+.check_box input[type="checkbox"]:checked:before {
+    content: "ON";
+    left: 4.1em;
+    color: #31ce36;
+}
+/*=============================================================
+                Select2 CSS
+ =============================================================*/
+.select2-container--default .select2-selection--single {
+    background-color: transparent !important;
+}
+.select2-container .select2-selection--single {
+    height: 32px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 32px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 30px !important;
+}
+
+/*=============================================================
+                CK Editor 5 CSS
+ =============================================================*/
+ .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content .ck-toolbar {
+    background: transparent;
+}
+/* .ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+    min-height: 200px !important;
+} */
+.ck.ck-editor__main>.ck-editor__editable {
+    min-height: 200px;
+    background-color: transparent !important;
+}

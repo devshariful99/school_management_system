@@ -6,12 +6,23 @@
             <div class="card ">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">{{ __('Permission List') }}</h4>
-                    <a href="{{route('am.permission.create')}}" class="btn btn-sm btn-primary">Add New</a>
+                    <div class="action_button">
+                        <x-backend.admin.button :datas="[
+                            'routeName' => 'permissions.export',
+                            'label' => 'Export Permissions CSV',
+                            'permissions' => ['permission-create'],
+                        ]" />
+                        <x-backend.admin.button :datas="[
+                            'routeName' => 'am.permission.create',
+                            'label' => 'Add New',
+                            'permissions' => ['permission-create'],
+                        ]" />
+                    </div>
                 </div>
                 <div class="card-body">
 
                     <div class="">
-                        <table class="table table-striped">
+                        <table class="table table-striped datatable">
                             <thead class=" text-primary">
                                 <tr>
                                     <th>{{ __('SL') }}</th>
@@ -23,44 +34,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($permissions as $key => $permission)
-                                    <tr>
-                                        <td>{{ $loop->iteration }} </td>
-                                        <td>{{ $permission->prefix }}</td>
-                                        <td>{{ $permission->name }}</td>
-                                        <td>{{ timeFormat($permission->created_at) }}</td>
-                                        <td>{{ c_user_name($permission->created_admin) }}</td>
-                                         <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="javascript:void(0)" class="btn btn-primary btn-rounded "
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="icon-options-vertical"></i>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a href="javascript:void(0)" data-id="{{ $permission->id }}"
-                                                        class="dropdown-item view">{{ __('Details') }}</a></li>
-                                                <li><a href="{{ route('am.permission.edit', $permission->id) }}"
-                                                        class="dropdown-item">{{ __('Edit') }}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0)"
-                                                        onclick="document.getElementById('delete-form').submit();">
-                                                        {{ __('Delete') }}
-                                                    </a>
-
-                                                    <form id="delete-form"
-                                                        action="{{ route('am.permission.destroy', $permission->id) }}" method="POST"
-                                                        class="d-none">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                    </tr>
-                                @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -72,83 +45,52 @@
             </div>
         </div>
     </div>
-
-    {{-- Permission Details Modal  --}}
-    <div class="modal view_modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{ __('Permission Details') }}</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body modal_data">
-                </div>
-            </div>
-        </div>
-    </div>
+    {{-- Admin Details Modal  --}}
+    <x-backend.admin.details-modal :datas="['modal_title' => 'Permission Details']" />
 @endsection
 @push('js')
+    {{-- Datatable Scripts --}}
+    <script src="{{ asset('datatable/main.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $(document).on('click', '.view', function() {
-                let id = $(this).data('id');
-                let url = ("{{ route('am.permission.show', ['id']) }}");
-                let _url = url.replace('id', id);
-                $.ajax({
-                    url: _url,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var result = `
-                        <table class="table table-striped">
-                            <tr>
-                                <th class="text-nowrap">Prefix</th>
-                                <th>:</th>
-                                <td>${data.prefix}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Name</th>
-                                <th>:</th>
-                                <td>${data.name}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Guard Name</th>
-                                <th>:</th>
-                                <td>${data.guard_name}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Created Date</th>
-                                <th>:</th>
-                                <td>${data.creating_time}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Created By</th>
-                                <th>:</th>
-                                <td>${data.created_by}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Updated Date</th>
-                                <th>:</th>
-                                <td>${data.updating_time}</td>
-                            </tr>
-                            <tr>
-                                <th class="text-nowrap">Updated By</th>
-                                <th>:</th>
-                                <td>${data.updated_by}</td>
-                            </tr>
-                        </table>
-                        `;
-                        $('.modal_data').html(result);
-                        $('.view_modal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching permission data:', error);
-                    }
-                });
-            });
+            let table_columns = [
+                //name and data, orderable, searchable
+                ['prefix', true, true],
+                ['name', true, true],
+                ['created_at', false, false],
+                ['created_by', true, true],
+                ['action', false, false],
+            ];
+            const details = {
+                table_columns: table_columns,
+                main_route: "{{ route('am.permission.index') }}",
+                order_route: "{{ route('update.sort.order') }}",
+                export_columns: [0, 1, 2, 3, 4],
+                model: 'Permission',
+            };
+            initializeDataTable(details);
+        })
+    </script>
+@endpush
+@push('js')
+    {{-- Show details scripts --}}
+    <script src="{{ asset('modal/details_modal.js') }}"></script>
+    <script>
+        // Event listener for viewing details
+        $(document).on("click", ".view", function() {
+            let id = $(this).data("id");
+            let route = "{{ route('am.permission.show', ['id']) }}";
+            const detailsUrl = route.replace("id", id);
+            const headers = [{
+                    label: "Prefix",
+                    key: "prefix"
+                },
+                {
+                    label: "Name",
+                    key: "name"
+                },
+            ];
+            fetchAndShowModal(detailsUrl, headers, "#modal_data", "myModal");
         });
     </script>
 @endpush
